@@ -69,9 +69,21 @@ namespace WojciechMikołajewicz.Base128UnitTest
 			.Select(test => new object[] { test.Value, test.Serialized, });
 		}
 
+		public static IEnumerable<object[]> GetOverflowTestData()
+		{
+			return new OverflowTest[]
+				{
+					new OverflowTest(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01, }),
+					new OverflowTest(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, }),
+					new OverflowTest(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, }),
+					new OverflowTest(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x7E, }),
+				}
+				.Select(test => new object[] { test.Serialized, });
+		}
+
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void TryWriteUInt64TestMethod(long value, byte[] serialized)
+		public void TryWriteInt64TestMethod(long value, byte[] serialized)
 		{
 			byte[] buf = new byte[serialized.Length];
 			int written;
@@ -85,7 +97,7 @@ namespace WojciechMikołajewicz.Base128UnitTest
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void TryReadUInt64TestMethod(long value, byte[] serialized)
+		public void TryReadInt64TestMethod(long value, byte[] serialized)
 		{
 			long readValue;
 			int read;
@@ -95,6 +107,27 @@ namespace WojciechMikołajewicz.Base128UnitTest
 			Assert.IsTrue(success);
 			Assert.AreEqual(expected: serialized.Length, actual: read);
 			Assert.AreEqual(expected: value, actual: readValue);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetOverflowTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryReadInt64OverflowTestMethod(byte[] serialized)
+		{
+			long readValue;
+			int read;
+
+			Assert.ThrowsException<OverflowException>(() => TryReadInt64(source: serialized, value: out readValue, read: out read));
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void GetRequiredBytesInt64TestMethod(long value, byte[] serialized)
+		{
+			int requiredBytes;
+
+			requiredBytes=GetRequiredBytesInt64(value);
+
+			Assert.AreEqual(expected: serialized.Length, actual: requiredBytes);
 		}
 	}
 }
