@@ -1,4 +1,4 @@
-[*.cs]
+﻿[*.cs]
 indent_style = tab
 [*.xml]
 indent_style = tab

@@ -1,11 +1,11 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WojciechMiko≥ajewicz.Base128UnitTest.Model;
-using static WojciechMiko≥ajewicz.Base128;
+using WojciechMiko≈Çajewicz.Base128UnitTest.Model;
+using static WojciechMiko≈Çajewicz.Base128;
 
-namespace WojciechMiko≥ajewicz.Base128UnitTest.Long
+namespace WojciechMiko≈Çajewicz.Base128UnitTest.Long
 {
 	[TestClass]
 	public class Base128ULongUnitTest
