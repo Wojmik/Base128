@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WojciechMikołajewicz.Base128UnitTest
+namespace WojciechMikołajewicz.Base128UnitTest.Model
 {
-	class OverflowTest
+	class OverflowTestSample
 	{
 		public byte[] Serialized { get; }
 
-		public OverflowTest(byte[] serialized)
+		public OverflowTestSample(byte[] serialized)
 		{
 			this.Serialized=serialized;
 		}

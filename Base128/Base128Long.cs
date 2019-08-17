@@ -7,7 +7,7 @@ namespace WojciechMikołajewicz
 	partial class Base128
 	{
 		/// <summary>
-		/// Method tries write 64-bit unsigned integer (ulong) to byte array
+		/// Method tries write 64-bit unsigned integer (<see cref="ulong"/>) to byte array
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
@@ -37,7 +37,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method tries write 64-bit signed integer (long) to byte array
+		/// Method tries write 64-bit signed integer (<see cref="long"/>) to byte array
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
@@ -70,7 +70,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method tries write 64-bit signed integer (long) to byte array with ZigZag coding (sign bit as the least significant bit)
+		/// Method tries write 64-bit signed integer (<see cref="long"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
@@ -82,7 +82,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method tries to read 64-bit unsigned integer (ulong) from byte array
+		/// Method tries to read 64-bit unsigned integer (<see cref="ulong"/>) from byte array
 		/// </summary>
 		/// <param name="source">Byte array from which read <paramref name="value"/></param>
 		/// <param name="value">Read value</param>
@@ -120,7 +120,7 @@ namespace WojciechMikołajewicz
 					val=source[read];
 					read++;
 					if(0!=(val&0xFE))
-						throw new OverflowException($"Value in {nameof(source)} is too big for ulong");
+						throw new OverflowException($"Value in {nameof(source)} is too big or too small");
 					value=(value>>1)|(ulong)val<<63;
 					return true;
 				}
@@ -129,7 +129,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method tries to read 64-bit signed integer (long) from byte array
+		/// Method tries to read 64-bit signed integer (<see cref="long"/>) from byte array
 		/// </summary>
 		/// <param name="source">Byte array from which read <paramref name="value"/></param>
 		/// <param name="value">Read value</param>
@@ -163,11 +163,11 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (tenth) byte
 				if(read<source.Length)
 				{
-					//It is the last (tenth) byte. There could be only one bit (64-7*9)
+					//It is the last (tenth) byte. There could be only one significant bit (64-7*9)
 					val=source[read];
 					read++;
-					if((int)val<<31>>6!=(int)val<<25)//val can be only 0 or 7F
-						throw new OverflowException($"Value in {nameof(source)} is too big or too small for long");
+					if((uint)((int)val<<31>>6)>>25!=(uint)val)//val can be only 0b0000_0000 or 0b0111_1111
+						throw new OverflowException($"Value in {nameof(source)} is too big or too small");
 					value=(long)(((ulong)value>>1)|(ulong)val<<63);//Rotate unsigned - the most significant bit has to be zero. Next operation is OR on this bit
 					return true;
 				}
@@ -176,7 +176,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method tries to read 64-bit signed integer (long) from byte array ZigZag encoded (sign bit as the least significant bit)
+		/// Method tries to read 64-bit signed integer (<see cref="long"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
 		/// </summary>
 		/// <param name="source">Byte array from which read <paramref name="value"/></param>
 		/// <param name="value">Read value</param>
@@ -194,10 +194,10 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method returns number of bytes required to store ulong <paramref name="value"/>
+		/// Method returns number of bytes required to store <see cref="ulong"/> <paramref name="value"/>
 		/// </summary>
 		/// <param name="value">Value to check</param>
-		/// <returns>Number of bytes required to store ulong <paramref name="value"/></returns>
+		/// <returns>Number of bytes required to store <see cref="ulong"/> <paramref name="value"/></returns>
 		public static int GetRequiredBytesUInt64(ulong value)
 		{
 			int required = 1;
@@ -215,10 +215,10 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method returns number of bytes required to store long <paramref name="value"/>. It works also for ZigZag.
+		/// Method returns number of bytes required to store <see cref="long"/> <paramref name="value"/>. It works also for ZigZag.
 		/// </summary>
 		/// <param name="value">Value to check</param>
-		/// <returns>Number of bytes required to store long <paramref name="value"/></returns>
+		/// <returns>Number of bytes required to store <see cref="long"/> <paramref name="value"/></returns>
 		public static int GetRequiredBytesInt64(long value)
 		{
 			long insignificantValue;
@@ -242,7 +242,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method writes 64-bit unsigned integer (ulong) to byte array
+		/// Method writes 64-bit unsigned integer (<see cref="ulong"/>) to byte array
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
@@ -255,7 +255,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method writes 64-bit signed integer (long) to byte array
+		/// Method writes 64-bit signed integer (<see cref="long"/>) to byte array
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
@@ -268,7 +268,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method writes 64-bit signed integer (long) to byte array with ZigZag coding (sign bit as the least significant bit)
+		/// Method writes 64-bit signed integer (<see cref="long"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
@@ -281,7 +281,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method reads 64-bit unsigned integer (ulong) from byte array
+		/// Method reads 64-bit unsigned integer (<see cref="ulong"/>) from byte array
 		/// </summary>
 		/// <param name="source">Byte array from which read value</param>
 		/// <param name="read">Number of bytes read</param>
@@ -298,7 +298,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method reads 64-bit signed integer (long) from byte array
+		/// Method reads 64-bit signed integer (<see cref="long"/>) from byte array
 		/// </summary>
 		/// <param name="source">Byte array from which read value</param>
 		/// <param name="read">Number of bytes read</param>
@@ -315,7 +315,7 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
-		/// Method reads 64-bit signed integer (long) from byte array ZigZag encoded (sign bit as the least significant bit)
+		/// Method reads 64-bit signed integer (<see cref="long"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
 		/// </summary>
 		/// <param name="source">Byte array from which read value</param>
 		/// <param name="read">Number of bytes read</param>

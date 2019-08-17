@@ -3,16 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WojciechMikołajewicz.Base128UnitTest.Model;
 using static WojciechMikołajewicz.Base128;
 
-namespace WojciechMikołajewicz.Base128UnitTest
+namespace WojciechMikołajewicz.Base128UnitTest.Long
 {
 	[TestClass]
 	public class Base128LongUnitTest
 	{
-		public static IEnumerable<object[]> GetTestData()
-		{
-			return new TestSample<long>[]
+		internal static readonly TestSample<long>[] TestData = new TestSample<long>[]
 			{
 				new TestSample<long>(0, new byte[] { 0x00, }),
 				new TestSample<long>(1, new byte[] { 0x01, }),
@@ -65,19 +64,27 @@ namespace WojciechMikołajewicz.Base128UnitTest
 				new TestSample<long>(long.MaxValue, new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, }),
 				new TestSample<long>(long.MinValue, new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x7F, }),
 				new TestSample<long>(300, new byte[] { 0xAC, 0x02, }),
-			}
-			.Select(test => new object[] { test.Value, test.Serialized, });
+			};
+
+		internal static readonly OverflowTestSample[] OverflowTestData = new OverflowTestSample[]
+			{
+				new OverflowTestSample(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01, }),
+				new OverflowTestSample(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, }),
+				new OverflowTestSample(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, }),
+				new OverflowTestSample(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x7E, }),
+				new OverflowTestSample(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01, }),
+				new OverflowTestSample(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, }),
+			};
+
+		public static IEnumerable<object[]> GetTestData()
+		{
+			return TestData
+				.Select(test => new object[] { test.Value, test.Serialized, });
 		}
 
 		public static IEnumerable<object[]> GetOverflowTestData()
 		{
-			return new OverflowTest[]
-				{
-					new OverflowTest(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01, }),
-					new OverflowTest(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, }),
-					new OverflowTest(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, }),
-					new OverflowTest(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x7E, }),
-				}
+			return OverflowTestData
 				.Select(test => new object[] { test.Serialized, });
 		}
 
