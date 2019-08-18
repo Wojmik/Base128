@@ -13,12 +13,12 @@ In a static namespace WojciechMikołajewicz.Base128 are those static methods.
 ### Serialize integer values
 
 ```c#
-bool TryWriteUInt64(Span<byte> destination, ulong value, out int written)
-bool TryWriteUInt32(Span<byte> destination, uint value, out int written)
-bool TryWriteInt64(Span<byte> destination, long value, out int written)
-bool TryWriteInt32(Span<byte> destination, int value, out int written)
-bool TryWriteInt64ZigZag(Span<byte> destination, long value, out int written)
-bool TryWriteInt32ZigZag(Span<byte> destination, int value, out int written)
+bool TryWriteUInt64(Span<byte> destination, ulong value, out int written);
+bool TryWriteUInt32(Span<byte> destination, uint value, out int written);
+bool TryWriteInt64(Span<byte> destination, long value, out int written);
+bool TryWriteInt32(Span<byte> destination, int value, out int written);
+bool TryWriteInt64ZigZag(Span<byte> destination, long value, out int written);
+bool TryWriteInt32ZigZag(Span<byte> destination, int value, out int written);
 ```
 
 Where destination is place to serialize value to, value is the value to serialize, written is out variable indicating how many bytes was written to destination and return value indicates if operation succeed (it can be false if there was not enough room in the destination to serialize whole value).
@@ -27,19 +27,19 @@ To write ushort, short, byte or sbyte use one of TryWrite32 method.
 
 ### Deserialize integer values
 
-```
-bool TryReadUInt64(ReadOnlySpan<byte> source, out ulong value, out int read)
-bool TryReadUInt32(ReadOnlySpan<byte> source, out uint value, out int read)
-bool TryReadUInt16(ReadOnlySpan<byte> source, out ushort value, out int read)
-bool TryReadUInt8(ReadOnlySpan<byte> source, out byte value, out int read)
-bool TryReadInt64(ReadOnlySpan<byte> source, out long value, out int read)
-bool TryReadInt32(ReadOnlySpan<byte> source, out int value, out int read)
-bool TryReadInt16(ReadOnlySpan<byte> source, out short value, out int read)
-bool TryReadInt8(ReadOnlySpan<byte> source, out sbyte value, out int read)
-bool TryReadInt64ZigZag(ReadOnlySpan<byte> source, out long value, out int read)
-bool TryReadInt32ZigZag(ReadOnlySpan<byte> source, out int value, out int read)
-bool TryReadInt16ZigZag(ReadOnlySpan<byte> source, out short value, out int read)
-bool TryReadInt8ZigZag(ReadOnlySpan<byte> source, out sbyte value, out int read)
+```c#
+bool TryReadUInt64(ReadOnlySpan<byte> source, out ulong value, out int read);
+bool TryReadUInt32(ReadOnlySpan<byte> source, out uint value, out int read);
+bool TryReadUInt16(ReadOnlySpan<byte> source, out ushort value, out int read);
+bool TryReadUInt8(ReadOnlySpan<byte> source, out byte value, out int read);
+bool TryReadInt64(ReadOnlySpan<byte> source, out long value, out int read);
+bool TryReadInt32(ReadOnlySpan<byte> source, out int value, out int read);
+bool TryReadInt16(ReadOnlySpan<byte> source, out short value, out int read);
+bool TryReadInt8(ReadOnlySpan<byte> source, out sbyte value, out int read);
+bool TryReadInt64ZigZag(ReadOnlySpan<byte> source, out long value, out int read);
+bool TryReadInt32ZigZag(ReadOnlySpan<byte> source, out int value, out int read);
+bool TryReadInt16ZigZag(ReadOnlySpan<byte> source, out short value, out int read);
+bool TryReadInt8ZigZag(ReadOnlySpan<byte> source, out sbyte value, out int read);
 ```
 
 Where source is place to deserialize value from, value is out variable witch deserialized value, read is out variable indicating how many bytes was read from source and return value indicates if operation succeed (it can be false if end of source was reached before whole value was read).
@@ -51,10 +51,10 @@ All those above methods are defined also without Try prefix. In those cases they
 ### How many bytes are required to store particular value
 
 ```c#
-int GetRequiredBytesUInt64(ulong value)
-int GetRequiredBytesUInt32(uint value)
-int GetRequiredBytesInt64(long value)
-int GetRequiredBytesInt32(int value)
+int GetRequiredBytesUInt64(ulong value);
+int GetRequiredBytesUInt32(uint value);
+int GetRequiredBytesInt64(long value);
+int GetRequiredBytesInt32(int value);
 ```
 
 Where value is the value to check and return value is the number of required bytes to store argument value.
@@ -66,7 +66,7 @@ Try not to use those methods. Better assume there is enough space in destination
 Sometimes we only want to skip a value, not reading it. For this purpose there is:
 
 ```c#
-bool TrySkip(ReadOnlySpan<byte> source, out int read)
+bool TrySkip(ReadOnlySpan<byte> source, out int read);
 ```
 
 Where source is a place with serialized value, read is out variable indicates how many bytes was skipped and return value indicates if operation succeed (it can be false if end of source was reached before whole value was skipped).
