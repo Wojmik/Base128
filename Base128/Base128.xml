@@ -1,0 +1,397 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Base128</name>
+    </assembly>
+    <members>
+        <member name="T:WojciechMikołajewicz.Base128">
+            <summary>
+            Class for Base128 integer conversions
+            </summary>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TrySkip(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method tries to skip Base128 variable integer value
+            </summary>
+            <param name="source">Byte array</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole value was skipped</returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadUInt8(System.ReadOnlySpan{System.Byte},System.Byte@,System.Int32@)">
+            <summary>
+            Method tries to read 8-bit unsigned integer (<see cref="T:System.Byte"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Byte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadInt8(System.ReadOnlySpan{System.Byte},System.SByte@,System.Int32@)">
+            <summary>
+            Method tries to read 8-bit signed integer (<see cref="T:System.SByte"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.SByte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadInt8ZigZag(System.ReadOnlySpan{System.Byte},System.SByte@,System.Int32@)">
+            <summary>
+            Method tries to read 8-bit signed integer (<see cref="T:System.SByte"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.SByte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadUInt8(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 8-bit unsigned integer (<see cref="T:System.Byte"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Byte"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Byte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadInt8(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 8-bit signed integer (<see cref="T:System.SByte"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.SByte"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.SByte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadInt8ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 8-bit signed integer (<see cref="T:System.SByte"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.SByte"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.SByte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteUInt32(System.Span{System.Byte},System.UInt32,System.Int32@)">
+            <summary>
+            Method tries write 32-bit unsigned integer (<see cref="T:System.UInt32"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32(System.Span{System.Byte},System.Int32,System.Int32@)">
+            <summary>
+            Method tries write 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32@)">
+            <summary>
+            Method tries write 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadUInt32(System.ReadOnlySpan{System.Byte},System.UInt32@,System.Int32@)">
+            <summary>
+            Method tries to read 32-bit unsigned integer (<see cref="T:System.UInt32"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadInt32(System.ReadOnlySpan{System.Byte},System.Int32@,System.Int32@)">
+            <summary>
+            Method tries to read 32-bit signed integer (<see cref="T:System.Int32"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadInt32ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@,System.Int32@)">
+            <summary>
+            Method tries to read 32-bit signed integer (<see cref="T:System.Int32"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.GetRequiredBytesUInt32(System.UInt32)">
+            <summary>
+            Method returns number of bytes required to store <see cref="T:System.UInt32"/> <paramref name="value"/>
+            </summary>
+            <param name="value">Value to check</param>
+            <returns>Number of bytes required to store <see cref="T:System.UInt32"/> <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.GetRequiredBytesInt32(System.Int32)">
+            <summary>
+            Method returns number of bytes required to store <see cref="T:System.Int32"/> <paramref name="value"/>. It works also for ZigZag.
+            </summary>
+            <param name="value">Value to check</param>
+            <returns>Number of bytes required to store <see cref="T:System.Int32"/> <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteUInt32(System.Span{System.Byte},System.UInt32,System.Int32@)">
+            <summary>
+            Method writes 32-bit unsigned integer (<see cref="T:System.UInt32"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteInt32(System.Span{System.Byte},System.Int32,System.Int32@)">
+            <summary>
+            Method writes 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32@)">
+            <summary>
+            Method writes 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadUInt32(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 32-bit unsigned integer (<see cref="T:System.UInt32"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.UInt32"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadInt32(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 32-bit signed integer (<see cref="T:System.Int32"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadInt32ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 32-bit signed integer (<see cref="T:System.Int32"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteUInt64(System.Span{System.Byte},System.UInt64,System.Int32@)">
+            <summary>
+            Method tries write 64-bit unsigned integer (<see cref="T:System.UInt64"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64(System.Span{System.Byte},System.Int64,System.Int32@)">
+            <summary>
+            Method tries write 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32@)">
+            <summary>
+            Method tries write 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadUInt64(System.ReadOnlySpan{System.Byte},System.UInt64@,System.Int32@)">
+            <summary>
+            Method tries to read 64-bit unsigned integer (<see cref="T:System.UInt64"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadInt64(System.ReadOnlySpan{System.Byte},System.Int64@,System.Int32@)">
+            <summary>
+            Method tries to read 64-bit signed integer (<see cref="T:System.Int64"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadInt64ZigZag(System.ReadOnlySpan{System.Byte},System.Int64@,System.Int32@)">
+            <summary>
+            Method tries to read 64-bit signed integer (<see cref="T:System.Int64"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.GetRequiredBytesUInt64(System.UInt64)">
+            <summary>
+            Method returns number of bytes required to store <see cref="T:System.UInt64"/> <paramref name="value"/>
+            </summary>
+            <param name="value">Value to check</param>
+            <returns>Number of bytes required to store <see cref="T:System.UInt64"/> <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.GetRequiredBytesInt64(System.Int64)">
+            <summary>
+            Method returns number of bytes required to store <see cref="T:System.Int64"/> <paramref name="value"/>. It works also for ZigZag.
+            </summary>
+            <param name="value">Value to check</param>
+            <returns>Number of bytes required to store <see cref="T:System.Int64"/> <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteUInt64(System.Span{System.Byte},System.UInt64,System.Int32@)">
+            <summary>
+            Method writes 64-bit unsigned integer (<see cref="T:System.UInt64"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteInt64(System.Span{System.Byte},System.Int64,System.Int32@)">
+            <summary>
+            Method writes 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32@)">
+            <summary>
+            Method writes 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadUInt64(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 64-bit unsigned integer (<see cref="T:System.UInt64"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.UInt64"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadInt64(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 64-bit signed integer (<see cref="T:System.Int64"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadInt64ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 64-bit signed integer (<see cref="T:System.Int64"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadUInt16(System.ReadOnlySpan{System.Byte},System.UInt16@,System.Int32@)">
+            <summary>
+            Method tries to read 16-bit unsigned integer (<see cref="T:System.UInt16"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt16"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadInt16(System.ReadOnlySpan{System.Byte},System.Int16@,System.Int32@)">
+            <summary>
+            Method tries to read 16-bit signed integer (<see cref="T:System.Int16"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int16"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryReadInt16ZigZag(System.ReadOnlySpan{System.Byte},System.Int16@,System.Int32@)">
+            <summary>
+            Method tries to read 16-bit signed integer (<see cref="T:System.Int16"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
+            </summary>
+            <param name="source">Byte array from which read <paramref name="value"/></param>
+            <param name="value">Read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int16"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadUInt16(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 16-bit unsigned integer (<see cref="T:System.UInt16"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.UInt16"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt16"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadInt16(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 16-bit signed integer (<see cref="T:System.Int16"/>) from byte array
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int16"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int16"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.ReadInt16ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method reads 16-bit signed integer (<see cref="T:System.Int16"/>) from byte array ZigZag encoded (sign bit as the least significant bit)
+            </summary>
+            <param name="source">Byte array from which read value</param>
+            <param name="read">Number of bytes read</param>
+            <returns>Read value</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int16"/></exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int16"/></exception>
+        </member>
+    </members>
+</doc>
