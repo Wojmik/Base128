@@ -28,5 +28,17 @@ namespace WojciechMikołajewicz
 			}
 			return false;
 		}
+
+		/// <summary>
+		/// Method skips Base128 variable integer value
+		/// </summary>
+		/// <param name="source">Byte array</param>
+		/// <param name="read">Number of bytes read</param>
+		/// <exception cref="ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was skipped</exception>
+		public static void Skip(ReadOnlySpan<byte> source, out int read)
+		{
+			if(!TrySkip(source: source, read: out read))
+				throw new ArgumentOutOfRangeException(nameof(source), $"End of {nameof(source)} was reached before whole value was skipped");
+		}
 	}
 }
