@@ -32,7 +32,7 @@ Zero on red bit informs that this is the last byte used to store original value.
 
 #### ulong 283 example
 
-Value 135 stored in ulong variable has hex representation:
+Value 283 stored in ulong variable has hex representation:
 
 ```c#
 0x000000000000011B
