@@ -22,11 +22,11 @@ Let's consider value of 55. If it is stored in ulong variable, hex representatio
 
 Binary representation of last byte is:
 
-![Example unsigned 1 input](/Documentation/Example unsigned 55 input.png)
+![Example unsigned 1 input](/Documentation/Example%20unsigned%2055%20input.png)
 
 Only green bits are significant (before green bits there can be any number of leading zero bits and value will be the same). As it ware told, only significant bits are serialized so serialized value will be:
 
-![Example unsigned output](/Documentation/Example unsigned 55 output.png)
+![Example unsigned output](/Documentation/Example%20unsigned%2055%20output.png)
 
 Zero on red bit informs that this is the last byte used to store original value.
 
@@ -40,10 +40,10 @@ Value 135 stored in ulong variable has hex representation:
 
 Binary representation of last two bytes is:
 
-![Example unsigned 283 input](/Documentation/Example unsigned 283 input.png)
+![Example unsigned 283 input](/Documentation/Example%20unsigned%20283%20input.png)
 
 And serialized value is:
 
-![Example unsigned 283 output](/Documentation/Example unsigned 283 output.png)
+![Example unsigned 283 output](/Documentation/Example%20unsigned%20283%20output.png)
 
 Bytes are encoded as little endian – less significant byte is encoded first and so on. Seven bits from less significant byte are written first with red bit set to one – indicating that this byte wasn't last. Next seven bits are stored in next byte with red bit set to zero – indicating that this byte is last.
