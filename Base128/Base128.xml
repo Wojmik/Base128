@@ -17,6 +17,14 @@
             <param name="read">Number of bytes read</param>
             <returns>True if success or false if not - which means end of array was reached before whole value was skipped</returns>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.Skip(System.ReadOnlySpan{System.Byte},System.Int32@)">
+            <summary>
+            Method skips Base128 variable integer value
+            </summary>
+            <param name="source">Byte array</param>
+            <param name="read">Number of bytes read</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was skipped</exception>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadUInt8(System.ReadOnlySpan{System.Byte},System.Byte@,System.Int32@)">
             <summary>
             Method tries to read 8-bit unsigned integer (<see cref="T:System.Byte"/>) from byte array
