@@ -5,12 +5,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WojciechMikołajewicz.Base128UnitTest.Int;
 using WojciechMikołajewicz.Base128UnitTest.Long;
 using WojciechMikołajewicz.Base128UnitTest.Model;
-using static WojciechMikołajewicz.Base128;
 
 namespace WojciechMikołajewicz.Base128UnitTest.Short
 {
 	[TestClass]
-	public class Base128UShortUnitTest
+	public class Base128UShortUnitTest : Base128UnitTestBase<ushort>
 	{
 		internal static OverflowTestSample[] OverflowTestData = new OverflowTestSample[]
 			{
@@ -35,53 +34,75 @@ namespace WojciechMikołajewicz.Base128UnitTest.Short
 				.Select(test => new object[] { test.Serialized, });
 		}
 
+		protected override bool TryWrite(Span<byte> destination, ushort value, out int written)
+		{
+			return Base128.TryWriteUInt32(destination: destination, value: value, written: out written);
+		}
+
+		protected override bool TryRead(Span<byte> source, out ushort value, out int read)
+		{
+			return Base128.TryReadUInt16(source: source, value: out value, read: out read);
+		}
+
+		protected override int GetRequiredBytes(ushort value)
+		{
+			return Base128.GetRequiredBytesUInt32(value);
+		}
+
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryWriteUInt16TestMethod(ushort value, byte[] serialized)
 		{
-			byte[] buf = new byte[serialized.Length];
-			int written;
-			bool success;
+			TryWriteTestMethod(value, serialized);
+		}
 
-			success=TryWriteUInt32(destination: buf, value: value, written: out written);
-			Assert.IsTrue(success);
-			Assert.AreEqual(expected: serialized.Length, actual: written);
-			Assert.IsTrue(Enumerable.SequenceEqual(serialized, buf));
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryWriteUInt16LongerBufTestMethod(ushort value, byte[] serialized)
+		{
+			TryWriteLongerBufTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryWriteUInt16EndOfBufTestMethod(ushort value, byte[] serialized)
+		{
+			TryWriteEndOfBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryReadUInt16TestMethod(ushort value, byte[] serialized)
 		{
-			ushort readValue;
-			int read;
-			bool success;
+			TryReadTestMethod(value, serialized);
+		}
 
-			success=TryReadUInt16(source: serialized, value: out readValue, read: out read);
-			Assert.IsTrue(success);
-			Assert.AreEqual(expected: serialized.Length, actual: read);
-			Assert.AreEqual(expected: value, actual: readValue);
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryReadUInt16LongerBufTestMethod(ushort value, byte[] serialized)
+		{
+			TryReadLongerBufTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryReadUInt16EndOfBufTestMethod(ushort value, byte[] serialized)
+		{
+			TryReadEndOfBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetOverflowTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryReadUInt16OverflowTestMethod(byte[] serialized)
 		{
-			ushort readValue;
-			int read;
-
-			Assert.ThrowsException<OverflowException>(() => TryReadUInt16(source: serialized, value: out readValue, read: out read));
+			TryReadOverflowTestMethod(serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void GetRequiredBytesUInt16TestMethod(ushort value, byte[] serialized)
 		{
-			int requiredBytes;
-
-			requiredBytes=GetRequiredBytesUInt32(value);
-
-			Assert.AreEqual(expected: serialized.Length, actual: requiredBytes);
+			GetRequiredBytesTestMethod(value, serialized);
 		}
 	}
 }

@@ -124,6 +124,7 @@ namespace WojciechMikołajewicz
 					value=(value>>4)|(uint)val<<28;
 					return true;
 				}
+				value=0;
 				return false;
 			}
 		}
@@ -171,6 +172,7 @@ namespace WojciechMikołajewicz
 					value=(int)(((uint)value>>4)|(uint)val<<28);//Rotate unsigned - the most significant bits have to be zeros. Next operation is OR on those bits
 					return true;
 				}
+				value=0;
 				return false;
 			}
 		}
