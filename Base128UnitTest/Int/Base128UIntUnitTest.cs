@@ -4,12 +4,11 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WojciechMikołajewicz.Base128UnitTest.Long;
 using WojciechMikołajewicz.Base128UnitTest.Model;
-using static WojciechMikołajewicz.Base128;
 
 namespace WojciechMikołajewicz.Base128UnitTest.Int
 {
 	[TestClass]
-	public class Base128UIntUnitTest
+	public class Base128UIntUnitTest : Base128UnitTestBase<uint>
 	{
 		internal static OverflowTestSample[] OverflowTestData = new OverflowTestSample[]
 			{
@@ -34,53 +33,75 @@ namespace WojciechMikołajewicz.Base128UnitTest.Int
 				.Select(test => new object[] { test.Serialized, });
 		}
 
+		protected override bool TryWrite(Span<byte> destination, uint value, out int written)
+		{
+			return Base128.TryWriteUInt32(destination: destination, value: value, written: out written);
+		}
+
+		protected override bool TryRead(Span<byte> source, out uint value, out int read)
+		{
+			return Base128.TryReadUInt32(source: source, value: out value, read: out read);
+		}
+
+		protected override int GetRequiredBytes(uint value)
+		{
+			return Base128.GetRequiredBytesUInt32(value);
+		}
+
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryWriteUInt32TestMethod(uint value, byte[] serialized)
 		{
-			byte[] buf = new byte[serialized.Length];
-			int written;
-			bool success;
+			TryWriteTestMethod(value, serialized);
+		}
 
-			success=TryWriteUInt32(destination: buf, value: value, written: out written);
-			Assert.IsTrue(success);
-			Assert.AreEqual(expected: serialized.Length, actual: written);
-			Assert.IsTrue(Enumerable.SequenceEqual(serialized, buf));
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryWriteUInt32LongerBufTestMethod(uint value, byte[] serialized)
+		{
+			TryWriteLongerBufTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryWriteUInt32EndOfBufTestMethod(uint value, byte[] serialized)
+		{
+			TryWriteEndOfBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryReadUInt32TestMethod(uint value, byte[] serialized)
 		{
-			uint readValue;
-			int read;
-			bool success;
+			TryReadTestMethod(value, serialized);
+		}
 
-			success=TryReadUInt32(source: serialized, value: out readValue, read: out read);
-			Assert.IsTrue(success);
-			Assert.AreEqual(expected: serialized.Length, actual: read);
-			Assert.AreEqual(expected: value, actual: readValue);
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryReadUInt32LongerBufTestMethod(uint value, byte[] serialized)
+		{
+			TryReadLongerBufTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryReadUInt32EndOfBufTestMethod(uint value, byte[] serialized)
+		{
+			TryReadEndOfBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetOverflowTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryReadUInt32OverflowTestMethod(byte[] serialized)
 		{
-			uint readValue;
-			int read;
-
-			Assert.ThrowsException<OverflowException>(() => TryReadUInt32(source: serialized, value: out readValue, read: out read));
+			TryReadOverflowTestMethod(serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void GetRequiredBytesUInt32TestMethod(uint value, byte[] serialized)
 		{
-			int requiredBytes;
-
-			requiredBytes=GetRequiredBytesUInt32(value);
-
-			Assert.AreEqual(expected: serialized.Length, actual: requiredBytes);
+			GetRequiredBytesTestMethod(value, serialized);
 		}
 	}
 }

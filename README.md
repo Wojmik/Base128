@@ -91,7 +91,7 @@ Binary representation of last byte is:
 
 ![Example unsigned 1 input](/Documentation/Example%20unsigned%2055%20input.png)
 
-Only green bits are significant (before green bits there can be any number of leading zero bits and value will be the same). As it ware told, only significant bits are serialized so serialized value will be:
+Only green bits are significant (before green bits there can be any number of leading zero bits and value will be the same). As it were told, only significant bits are serialized so serialized value will be:
 
 ![Example unsigned output](/Documentation/Example%20unsigned%2055%20output.png)
 

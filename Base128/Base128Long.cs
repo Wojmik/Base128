@@ -124,6 +124,7 @@ namespace WojciechMikołajewicz
 					value=(value>>1)|(ulong)val<<63;
 					return true;
 				}
+				value=0;
 				return false;
 			}
 		}
@@ -171,6 +172,7 @@ namespace WojciechMikołajewicz
 					value=(long)(((ulong)value>>1)|(ulong)val<<63);//Rotate unsigned - the most significant bit has to be zero. Next operation is OR on this bit
 					return true;
 				}
+				value=0;
 				return false;
 			}
 		}

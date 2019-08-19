@@ -6,12 +6,11 @@ using System.Text;
 using WojciechMikołajewicz.Base128UnitTest.Short;
 using WojciechMikołajewicz.Base128UnitTest.Long;
 using WojciechMikołajewicz.Base128UnitTest.Model;
-using static WojciechMikołajewicz.Base128;
 
 namespace WojciechMikołajewicz.Base128UnitTest.Byte
 {
 	[TestClass]
-	public class Base128SByteZigZagUnitTest
+	public class Base128SByteZigZagUnitTest : Base128UnitTestBase<sbyte>
 	{
 		internal static OverflowTestSample[] OverflowTestData = new OverflowTestSample[]
 			{
@@ -37,42 +36,75 @@ namespace WojciechMikołajewicz.Base128UnitTest.Byte
 				.Select(test => new object[] { test.Serialized, });
 		}
 
+		protected override bool TryWrite(Span<byte> destination, sbyte value, out int written)
+		{
+			return Base128.TryWriteInt32ZigZag(destination: destination, value: value, written: out written);
+		}
+
+		protected override bool TryRead(Span<byte> source, out sbyte value, out int read)
+		{
+			return Base128.TryReadInt8ZigZag(source: source, value: out value, read: out read);
+		}
+
+		protected override int GetRequiredBytes(sbyte value)
+		{
+			return Base128.GetRequiredBytesInt32(value);
+		}
+
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryWriteInt8TestMethod(sbyte value, byte[] serialized)
 		{
-			byte[] buf = new byte[serialized.Length];
-			int written;
-			bool success;
+			TryWriteTestMethod(value, serialized);
+		}
 
-			success=TryWriteInt32ZigZag(destination: buf, value: value, written: out written);
-			Assert.IsTrue(success);
-			Assert.AreEqual(expected: serialized.Length, actual: written);
-			Assert.IsTrue(Enumerable.SequenceEqual(serialized, buf));
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryWriteInt8LongerBufTestMethod(sbyte value, byte[] serialized)
+		{
+			TryWriteLongerBufTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryWriteInt8EndOfBufTestMethod(sbyte value, byte[] serialized)
+		{
+			TryWriteEndOfBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryReadInt16TestMethod(sbyte value, byte[] serialized)
 		{
-			sbyte readValue;
-			int read;
-			bool success;
+			TryReadTestMethod(value, serialized);
+		}
 
-			success=TryReadInt8ZigZag(source: serialized, value: out readValue, read: out read);
-			Assert.IsTrue(success);
-			Assert.AreEqual(expected: serialized.Length, actual: read);
-			Assert.AreEqual(expected: value, actual: readValue);
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryReadInt8LongerBufTestMethod(sbyte value, byte[] serialized)
+		{
+			TryReadLongerBufTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void TryReadInt8EndOfBufTestMethod(sbyte value, byte[] serialized)
+		{
+			TryReadEndOfBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetOverflowTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryReadInt8OverflowTestMethod(byte[] serialized)
 		{
-			sbyte readValue;
-			int read;
+			TryReadOverflowTestMethod(serialized);
+		}
 
-			Assert.ThrowsException<OverflowException>(() => TryReadInt8ZigZag(source: serialized, value: out readValue, read: out read));
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void GetRequiredBytesInt8TestMethod(sbyte value, byte[] serialized)
+		{
+			GetRequiredBytesTestMethod(value, serialized);
 		}
 	}
 }
