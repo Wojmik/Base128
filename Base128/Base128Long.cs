@@ -116,7 +116,7 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (tenth) byte
 				if(read<source.Length)
 				{
-					//It is the last (tenth) byte. There could be only one bit (64-7*9)
+					//It is the last (tenth) byte. There could be only one bit (64-9*7)
 					val=source[read];
 					read++;
 					if(0!=(val&0xFE))
@@ -164,7 +164,7 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (tenth) byte
 				if(read<source.Length)
 				{
-					//It is the last (tenth) byte. There could be only one significant bit (64-7*9)
+					//It is the last (tenth) byte. There could be only one significant bit (64-9*7)
 					val=source[read];
 					read++;
 					if((uint)((int)val<<31>>6)>>25!=(uint)val)//val can be only 0b0000_0000 or 0b0111_1111

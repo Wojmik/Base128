@@ -401,5 +401,179 @@
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int16"/></exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int16"/></exception>
         </member>
+        <member name="T:WojciechMikołajewicz.BinaryReaderBase128">
+            <summary>
+            Reads primitive data types as binary values in a specific encoding.
+            </summary>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the System.IO.BinaryReader class based on the specified stream and using UTF-8 encoding.
+            </summary>
+            <param name="input">The input stream.</param>
+            <exception cref="T:System.ArgumentException">The stream does not support reading, is null, or is already closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the System.IO.BinaryReader class based on the specified stream and character encoding.
+            </summary>
+            <param name="input">The input stream.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <exception cref="T:System.ArgumentException">The stream does not support reading, is null, or is already closed.</exception>
+            <exception cref="T:System.ArgumentNullException">encoding is null.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.#ctor(System.IO.Stream,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.BinaryReader class based on the specified stream and character encoding, and optionally leaves the stream open.
+            </summary>
+            <param name="input">The input stream.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="leaveOpen">true to leave the stream open after the System.IO.BinaryReader object is disposed; otherwise, false.</param>
+            <exception cref="T:System.ArgumentException">The stream does not support reading, is null, or is already closed.</exception>
+            <exception cref="T:System.ArgumentNullException">encoding or input is null.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadUInt64Base128">
+            <summary>
+            Reads an 8-byte unsigned integer from the current stream as variable length integer and advances the position of the stream by eight bytes.
+            </summary>
+            <returns>An 8-byte unsigned integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt64"/></exception>
+        </member>
+        <member name="T:WojciechMikołajewicz.BinaryWriterBase128">
+            <summary>
+            Writes primitive types in binary to a stream and supports writing strings in a specific encoding.
+            </summary>
+        </member>
+        <member name="F:WojciechMikołajewicz.BinaryWriterBase128.Buf">
+            <summary>
+            Internal buffer for serializing
+            </summary>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the System.IO.BinaryWriter class based on the specified stream and using UTF-8 encoding.
+            </summary>
+            <param name="output">The output stream.</param>
+            <exception cref="T:System.ArgumentException">The stream does not support writing or is already closed.</exception>
+            <exception cref="T:System.ArgumentNullException">output is null.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the System.IO.BinaryWriter class based on the specified stream and character encoding.
+            </summary>
+            <param name="output">The output stream.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <exception cref="T:System.ArgumentException">The stream does not support writing or is already closed.</exception>
+            <exception cref="T:System.ArgumentNullException">output or encoding is null.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.#ctor(System.IO.Stream,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.BinaryWriter class based on the specified stream and character encoding, and optionally leaves the stream open.
+            </summary>
+            <param name="output">The output stream.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="leaveOpen">true to leave the stream open after the System.IO.BinaryWriter object is disposed; otherwise, false.</param>
+            <exception cref="T:System.ArgumentException">The stream does not support writing or is already closed.</exception>
+            <exception cref="T:System.ArgumentNullException">output or encoding is null.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128(System.UInt64)">
+            <summary>
+            Writes an eight-byte unsigned integer to the current stream as variable length integer and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The eight-byte unsigned integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128(System.Int64)">
+            <summary>
+            Writes an eight-byte signed integer to the current stream as variable length integer and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The eight-byte signed integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128ZigZag(System.Int64)">
+            <summary>
+            Writes an eight-byte signed integer to the current stream as variable length integer ZgiZag encoded and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The eight-byte signed integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128(System.UInt32)">
+            <summary>
+            Writes a four-byte unsigned integer to the current stream as variable length integer and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The four-byte unsigned integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128(System.Int32)">
+            <summary>
+            Writes a four-byte signed integer to the current stream as variable length integer and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The four-byte signed integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128ZigZag(System.Int32)">
+            <summary>
+            Writes a four-byte signed integer to the current stream as variable length integer ZgiZag encoded and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The four-byte signed integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128(System.UInt16)">
+            <summary>
+            Writes a two-byte unsigned integer to the current stream as variable length integer and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The two-byte unsigned integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128(System.Int16)">
+            <summary>
+            Writes a two-byte signed integer to the current stream as variable length integer and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The two-byte signed integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128ZigZag(System.Int16)">
+            <summary>
+            Writes a two-byte signed integer to the current stream as variable length integer ZgiZag encoded and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The two-byte signed integer to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128(System.Byte)">
+            <summary>
+            Writes an unsigned byte to the current stream as variable length integer and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The unsigned byte to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128(System.SByte)">
+            <summary>
+            Writes a signed byte to the current stream as variable length integer and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The signed byte to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryWriterBase128.WriteBase128ZigZag(System.SByte)">
+            <summary>
+            Writes a signed byte to the current stream as variable length integer ZgiZag encoded and advances the stream position by appropriate number of bytes.
+            </summary>
+            <param name="value">The signed byte to write.</param>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+        </member>
     </members>
 </doc>

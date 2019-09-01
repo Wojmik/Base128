@@ -3,6 +3,16 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<RootNamespace>WojciechMikołajewicz</RootNamespace>
+		<Authors>Wojciech Mikołajewicz</Authors>
+		<PackageTags>Variable Length Integer Base128 Serializer ZigZag</PackageTags>
+		<PackageId>VarInt</PackageId>
+		<Product>VarInt</Product>
+		<RepositoryUrl>https://github.com/Wojmik/Base128</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Wojmik/Base128</PackageProjectUrl>
+		<Copyright>Wojciech Mikołajewicz</Copyright>
+		<AssemblyVersion>1.0.1.0</AssemblyVersion>
+		<FileVersion>1.0.1.0</FileVersion>
+		<Version>1.0.1</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

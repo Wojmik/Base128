@@ -116,7 +116,7 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (fifth) byte
 				if(read<source.Length)
 				{
-					//It is the last (fifth) byte. There could be only four bits (32-7*4)
+					//It is the last (fifth) byte. There could be only four bits (32-4*7)
 					val=source[read];
 					read++;
 					if(0!=(val&0xF0))
@@ -164,7 +164,7 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (fifth) byte
 				if(read<source.Length)
 				{
-					//It is the last (fifth) byte. There could be only four significant bits (32-7*4)
+					//It is the last (fifth) byte. There could be only four significant bits (32-4*7)
 					val=source[read];
 					read++;
 					if((uint)((int)val<<28>>3)>>25!=(uint)val)//val can be only 0b0000_0xxx or 0b0111_1xxx
