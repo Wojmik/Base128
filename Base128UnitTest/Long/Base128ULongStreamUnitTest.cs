@@ -30,5 +30,19 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 		{
 			WriteStreamTestMethod(value: value, serialized: serialized);
 		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void WriteUInt64StreamLongerBufTestMethod(ulong value, byte[] serialized)
+		{
+			WriteStreamLongerBufTestMethod(value: value, serialized: serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void WriteUInt64StreamEndOfBufTestMethod(ulong value, byte[] serialized)
+		{
+			WriteStreamEndOfStreamTestMethod(value: value, serialized: serialized);
+		}
 	}
 }

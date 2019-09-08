@@ -14,7 +14,7 @@ namespace WojciechMikołajewicz.Base128UnitTest
 
 		public virtual void WriteStreamTestMethod(T value, byte[] serialized)
 		{
-			using(var ms = new System.IO.MemoryStream(serialized.Length))
+			using(var ms = new System.IO.MemoryStream(new byte[serialized.Length]))
 			using(var binaryWriter = new BinaryWriterBase128(output: ms))
 			{
 				WriteStream(binaryWriter: binaryWriter, value: value);
@@ -24,6 +24,30 @@ namespace WojciechMikołajewicz.Base128UnitTest
 				binaryWriter.Flush();
 
 				Assert.IsTrue(ms.ToArray().SequenceEqual(serialized));
+			}
+		}
+
+		public virtual void WriteStreamLongerBufTestMethod(T value, byte[] serialized)
+		{
+			using(var ms = new System.IO.MemoryStream(new byte[serialized.Length+1]))
+			using(var binaryWriter = new BinaryWriterBase128(output: ms))
+			{
+				WriteStream(binaryWriter: binaryWriter, value: value);
+
+				Assert.AreEqual(expected: serialized.Length, actual: binaryWriter.BaseStream.Position);
+
+				binaryWriter.Flush();
+
+				Assert.IsTrue(ms.ToArray().Take(serialized.Length).SequenceEqual(serialized));
+			}
+		}
+
+		public virtual void WriteStreamEndOfStreamTestMethod(T value, byte[] serialized)
+		{
+			using(var ms = new System.IO.MemoryStream(new byte[serialized.Length-1]))
+			using(var binaryWriter = new BinaryWriterBase128(output: ms))
+			{
+				Assert.ThrowsException<NotSupportedException>(() => WriteStream(binaryWriter: binaryWriter, value: value));
 			}
 		}
 	}
