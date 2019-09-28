@@ -73,10 +73,17 @@ namespace WojciechMikołajewicz
 				//If we are here it is the last (tenth) byte. There could be only one bit (64-9*7)
 				val=this.BaseStream.ReadByte();
 				if(0!=(val&-2))//-2 = 0xFFFFFFFE
-					if(val==-1)
+					if(val==-1)//End of stream
 						throw new EndOfStreamException();
-					else
+					else//Overflow detected
+					{
+						//Read the rest of the overflowed value
+						while((val>>7)==1)//This avoids endles loop if val is -1 (end of stream)
+						{
+							val=this.BaseStream.ReadByte();
+						}
 						throw new OverflowException($"Value in stream is too big or too small");
+					}
 				return (value>>1)|(ulong)val<<63;
 			}
 		}

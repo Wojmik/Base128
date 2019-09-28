@@ -13,6 +13,10 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 		{
 			return Base128ULongUnitTest.GetTestData();
 		}
+		static IEnumerable<object[]> GetOverflowTestData()
+		{
+			return Base128ULongUnitTest.GetOverflowTestData();
+		}
 
 		protected override ulong ReadStream(BinaryReaderBase128 binaryReader)
 		{
@@ -40,9 +44,37 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public virtual void WriteUInt64StreamEndOfBufTestMethod(ulong value, byte[] serialized)
+		public virtual void WriteUInt64StreamEndOfStreamTestMethod(ulong value, byte[] serialized)
 		{
 			WriteStreamEndOfStreamTestMethod(value: value, serialized: serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void ReadUInt64StreamTestMethod(ulong value, byte[] serialized)
+		{
+			ReadStreamTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void ReadUInt64StreamLongerBufTestMethod(ulong value, byte[] serialized)
+		{
+			ReadStreamLongerBufTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public virtual void ReadUInt64StreamEndOfStreamTestMethod(ulong value, byte[] serialized)
+		{
+			ReadStreamEndOfStreamTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetOverflowTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void ReadUInt64StreamOverflowTestMethod(byte[] serialized)
+		{
+			ReadStreamOverflowTestMethod(serialized);
 		}
 	}
 }
