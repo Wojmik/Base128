@@ -231,7 +231,7 @@ namespace WojciechMikołajewicz
 		public static int GetRequiredBytesInt32(int value)
 		{
 			//int and ZigZag take exactly the same bits, but ZigZag changes value to uint and uint can be calculated using Lzcnt, so do so
-			return GetRequiredBytesUInt64((uint)((value<<1)^(value>>31)));
+			return GetRequiredBytesUInt32((uint)((value<<1)^(value>>31)));
 		}
 
 		/// <summary>
