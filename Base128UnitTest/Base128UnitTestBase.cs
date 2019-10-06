@@ -6,6 +6,7 @@ using System.Text;
 namespace WojciechMikołajewicz.Base128UnitTest
 {
 	public abstract class Base128UnitTestBase<T>
+		where T : struct
 	{
 		protected abstract bool TryWrite(Span<byte> destination, T value, out int written);
 

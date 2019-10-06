@@ -116,7 +116,7 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (fifth) byte
 				if(read<source.Length)
 				{
-					//It is the last (fifth) byte. There could be only four bits (32-7*4)
+					//It is the last (fifth) byte. There could be only four bits (32-4*7)
 					val=source[read];
 					read++;
 					if(0!=(val&0xF0))
@@ -164,7 +164,7 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (fifth) byte
 				if(read<source.Length)
 				{
-					//It is the last (fifth) byte. There could be only four significant bits (32-7*4)
+					//It is the last (fifth) byte. There could be only four significant bits (32-4*7)
 					val=source[read];
 					read++;
 					if((uint)((int)val<<28>>3)>>25!=(uint)val)//val can be only 0b0000_0xxx or 0b0111_1xxx
@@ -202,17 +202,25 @@ namespace WojciechMikołajewicz
 		/// <returns>Number of bytes required to store <see cref="uint"/> <paramref name="value"/></returns>
 		public static int GetRequiredBytesUInt32(uint value)
 		{
+			int required;
+
+#if !NETSTANDARD2_0
+			if(System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
+				required=(31-(int)System.Runtime.Intrinsics.X86.Lzcnt.LeadingZeroCount(value))/7+1;
+			else
+				required=(Math.ILogB(value)&int.MaxValue)/7+1;
+#else
 			//Math.Log(0, 2) is -Infinity, cast to int is 0x80000000
-			return ((int)Math.Log(value, 2)&int.MaxValue)/7+1;
+			required=((int)Math.Log(value, 2)&int.MaxValue)/7+1;
+#endif
 
-			//int required = 1;
-
+			//required = 1;
 			//while(0!=(value>>=7))
 			//{
 			//	required++;
 			//}
 
-			//return required;
+			return required;
 		}
 
 		/// <summary>
@@ -222,24 +230,8 @@ namespace WojciechMikołajewicz
 		/// <returns>Number of bytes required to store <see cref="int"/> <paramref name="value"/></returns>
 		public static int GetRequiredBytesInt32(int value)
 		{
-			long insignificantValue;
-			int required = 1;
-
-			//Copy most significant bit (sign bit) bit 31 times to right
-			insignificantValue=value>>31;//value>=0 ? 0 : -1 (-1 = 0xFFFFFFFF)
-
-			//First rotation is 6 bit
-			if(insignificantValue!=(value>>=6))
-			{
-				required++;
-
-				while(insignificantValue!=(value>>=7))
-				{
-					required++;
-				}
-			}
-
-			return required;
+			//int and ZigZag take exactly the same bits, but ZigZag changes value to uint and uint can be calculated using Lzcnt, so do so
+			return GetRequiredBytesUInt32((uint)((value<<1)^(value>>31)));
 		}
 
 		/// <summary>

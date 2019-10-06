@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
 
     <RootNamespace>WojciechMikołajewicz.Base128UnitTest</RootNamespace>
+		<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

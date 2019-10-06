@@ -116,7 +116,7 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (tenth) byte
 				if(read<source.Length)
 				{
-					//It is the last (tenth) byte. There could be only one bit (64-7*9)
+					//It is the last (tenth) byte. There could be only one bit (64-9*7)
 					val=source[read];
 					read++;
 					if(0!=(val&0xFE))
@@ -164,7 +164,7 @@ namespace WojciechMikołajewicz
 				//If we are here it could be end of source or it is the last (tenth) byte
 				if(read<source.Length)
 				{
-					//It is the last (tenth) byte. There could be only one significant bit (64-7*9)
+					//It is the last (tenth) byte. There could be only one significant bit (64-9*7)
 					val=source[read];
 					read++;
 					if((uint)((int)val<<31>>6)>>25!=(uint)val)//val can be only 0b0000_0000 or 0b0111_1111
@@ -202,16 +202,24 @@ namespace WojciechMikołajewicz
 		/// <returns>Number of bytes required to store <see cref="ulong"/> <paramref name="value"/></returns>
 		public static int GetRequiredBytesUInt64(ulong value)
 		{
-			int required = 1;
+			int required;
 
 			//Base 2 logarithm cannot be used because double can't store ulong with full precision so (int)Math.Log(0xFFFFFFFFFFFFFF, 2) should be 55 and is 56
 			//.Net Core 3.0 Math.ILogB method probably will not work too - for the same reason
 			//(double)0xFFFFFFFFFFFFFF is indistinguishable from (double)0x100000000000000
-
-			while(0!=(value>>=7))
+#if !NETSTANDARD2_0
+			if(System.Runtime.Intrinsics.X86.Lzcnt.X64.IsSupported)
+				required=(63-(int)System.Runtime.Intrinsics.X86.Lzcnt.X64.LeadingZeroCount(value))/7+1;
+			else
+#endif
 			{
-				required++;
+				required = 1;
+				while(0!=(value>>=7))
+				{
+					required++;
+				}
 			}
+
 
 			return required;
 		}
@@ -223,24 +231,8 @@ namespace WojciechMikołajewicz
 		/// <returns>Number of bytes required to store <see cref="long"/> <paramref name="value"/></returns>
 		public static int GetRequiredBytesInt64(long value)
 		{
-			long insignificantValue;
-			int required = 1;
-
-			//Copy most significant bit (sign bit) bit 63 times to right
-			insignificantValue=value>>63;//value>=0 ? 0 : -1 (-1 = 0xFFFFFFFFFFFFFFFF)
-
-			//First rotation is 6 bit
-			if(insignificantValue!=(value>>=6))
-			{
-				required++;
-
-				while(insignificantValue!=(value>>=7))
-				{
-					required++;
-				}
-			}
-
-			return required;
+			//long and ZigZag take exactly the same bits, but ZigZag changes value to ulong and ulong can be calculated using Lzcnt, so do so
+			return GetRequiredBytesUInt64((ulong)((value<<1)^(value>>63)));
 		}
 
 		/// <summary>
