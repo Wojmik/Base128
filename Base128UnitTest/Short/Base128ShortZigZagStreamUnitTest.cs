@@ -4,89 +4,89 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WojciechMikołajewicz.Base128UnitTest.Long
+namespace WojciechMikołajewicz.Base128UnitTest.Short
 {
 	[TestClass]
-	public class Base128ULongStreamUnitTest : Base128StreamUnitTestBase<ulong>
+	public class Base128ShortZigZagStreamUnitTest : Base128StreamUnitTestBase<short>
 	{
 		static IEnumerable<object[]> GetTestData()
 		{
-			return Base128ULongUnitTest.GetTestData();
+			return Base128ShortZigZagUnitTest.GetTestData();
 		}
 		static IEnumerable<object[]> GetOverflowTestData()
 		{
-			return Base128ULongUnitTest.GetOverflowTestData();
+			return Base128ShortZigZagUnitTest.GetOverflowTestData();
 		}
 
-		protected override ulong ReadStream(BinaryReaderBase128 binaryReader)
+		protected override short ReadStream(BinaryReaderBase128 binaryReader)
 		{
-			return binaryReader.ReadUInt64Base128();
+			return binaryReader.ReadInt16Base128ZigZag();
 		}
 
-		protected override void WriteStream(BinaryWriterBase128 binaryWriter, ulong value)
+		protected override void WriteStream(BinaryWriterBase128 binaryWriter, short value)
 		{
-			binaryWriter.WriteBase128(value: value);
+			binaryWriter.WriteBase128ZigZag(value: value);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void WriteUInt64StreamTestMethod(ulong value, byte[] serialized)
+		public void WriteInt16ZigZagStreamTestMethod(short value, byte[] serialized)
 		{
 			WriteStreamTestMethod(value: value, serialized: serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void WriteUInt64StreamLongerBufTestMethod(ulong value, byte[] serialized)
+		public void WriteInt16ZigZagStreamLongerBufTestMethod(short value, byte[] serialized)
 		{
 			WriteStreamLongerBufTestMethod(value: value, serialized: serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void WriteUInt64StreamEndOfStreamTestMethod(ulong value, byte[] serialized)
+		public void WriteInt16ZigZagStreamEndOfStreamTestMethod(short value, byte[] serialized)
 		{
 			WriteStreamEndOfStreamTestMethod(value: value, serialized: serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void ReadUInt64StreamTestMethod(ulong value, byte[] serialized)
+		public void ReadInt16ZigZagStreamTestMethod(short value, byte[] serialized)
 		{
 			ReadStreamTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void ReadUInt64StreamLongerBufTestMethod(ulong value, byte[] serialized)
+		public void ReadInt16ZigZagStreamLongerBufTestMethod(short value, byte[] serialized)
 		{
 			ReadStreamLongerBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void ReadUInt64StreamEndOfStreamTestMethod(ulong value, byte[] serialized)
+		public void ReadInt16ZigZagStreamEndOfStreamTestMethod(short value, byte[] serialized)
 		{
 			ReadStreamEndOfStreamTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetOverflowTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void ReadUInt64StreamOverflowTestMethod(byte[] serialized)
+		public void ReadInt16ZigZagStreamOverflowTestMethod(byte[] serialized)
 		{
 			ReadStreamOverflowTestMethod(serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetOverflowTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void ReadUInt64StreamLongerBufOverflowTestMethod(byte[] serialized)
+		public void ReadInt16ZigZagStreamLongerBufOverflowTestMethod(byte[] serialized)
 		{
 			ReadStreamLongerBufOverflowTestMethod(serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetOverflowTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public void ReadUInt64StreamEndOfStreamOverflowTestMethod(byte[] serialized)
+		public void ReadInt16ZigZagStreamEndOfStreamOverflowTestMethod(byte[] serialized)
 		{
 			ReadStreamEndOfStreamOverflowTestMethod(serialized);
 		}

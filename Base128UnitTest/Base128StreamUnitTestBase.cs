@@ -111,5 +111,37 @@ namespace WojciechMikołajewicz.Base128UnitTest
 				Assert.AreEqual(expected: serialized.Length, actual: binaryReader.BaseStream.Position);
 			}
 		}
+
+		public virtual void ReadStreamLongerBufOverflowTestMethod(byte[] serialized)
+		{
+			byte[] buf = new byte[serialized.Length+1];
+
+			serialized.AsSpan().CopyTo(buf);
+
+			using(var ms = new MemoryStream(buf))
+			using(var binaryReader = new BinaryReaderBase128(input: ms))
+			{
+				Assert.ThrowsException<OverflowException>(() => ReadStream(binaryReader: binaryReader));
+
+				//Should set Position after whole overflowed value
+				Assert.AreEqual(expected: serialized.Length, actual: binaryReader.BaseStream.Position);
+			}
+		}
+
+		public virtual void ReadStreamEndOfStreamOverflowTestMethod(byte[] serialized)
+		{
+			byte[] buf = new byte[serialized.Length-1];
+
+			serialized.AsSpan(0, buf.Length).CopyTo(buf);
+
+			using(var ms = new MemoryStream(buf))
+			using(var binaryReader = new BinaryReaderBase128(input: ms))
+			{
+				Assert.ThrowsException<EndOfStreamException>(() => ReadStream(binaryReader: binaryReader));
+
+				//Should set Position after whole overflowed value but reached end of stream
+				Assert.AreEqual(expected: buf.Length, actual: binaryReader.BaseStream.Position);
+			}
+		}
 	}
 }

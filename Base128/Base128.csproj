@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
 		<RootNamespace>WojciechMikołajewicz</RootNamespace>
 		<Authors>Wojciech Mikołajewicz</Authors>
 		<PackageTags>Variable Length Integer Base128 Serializer ZigZag</PackageTags>

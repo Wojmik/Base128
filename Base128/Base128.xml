@@ -434,13 +434,131 @@
         </member>
         <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadUInt64Base128">
             <summary>
-            Reads an 8-byte unsigned integer from the current stream as variable length integer and advances the position of the stream by eight bytes.
+            Reads an 8-byte unsigned integer from the current stream as variable length integer and advances the position of the stream.
             </summary>
             <returns>An 8-byte unsigned integer read from this stream.</returns>
             <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
             <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
             <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadInt64Base128">
+            <summary>
+            Reads an 8-byte signed integer from the current stream as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 8-byte signed integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadInt64Base128ZigZag">
+            <summary>
+            Reads an 8-byte signed integer from the current stream ZigZag encoded (sign bit as the least significant bit) as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 8-byte signed integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadUInt32Base128">
+            <summary>
+            Reads an 4-byte unsigned integer from the current stream as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 4-byte unsigned integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadInt32Base128">
+            <summary>
+            Reads an 4-byte signed integer from the current stream as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 4-byte signed integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadInt32Base128ZigZag">
+            <summary>
+            Reads an 4-byte signed integer from the current stream ZigZag encoded (sign bit as the least significant bit) as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 4-byte signed integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadUInt16Base128">
+            <summary>
+            Reads an 2-byte unsigned integer from the current stream as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 2-byte unsigned integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt16"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadInt16Base128">
+            <summary>
+            Reads an 2-byte signed integer from the current stream as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 2-byte signed integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int16"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadInt16Base128ZigZag">
+            <summary>
+            Reads an 2-byte signed integer from the current stream ZigZag encoded (sign bit as the least significant bit) as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 2-byte signed integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int16"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadUInt8Base128">
+            <summary>
+            Reads an 1-byte unsigned integer from the current stream as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 1-byte unsigned integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Byte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadInt8Base128">
+            <summary>
+            Reads an 1-byte signed integer from the current stream as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 1-byte signed integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.SByte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.ReadInt8Base128ZigZag">
+            <summary>
+            Reads an 1-byte signed integer from the current stream ZigZag encoded (sign bit as the least significant bit) as variable length integer and advances the position of the stream.
+            </summary>
+            <returns>An 1-byte signed integer read from this stream.</returns>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
+            <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.SByte"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.BinaryReaderBase128.SkipBase128Value">
+            <summary>
+            Skips Base128 variable integer value on the current stream
+            </summary>
+            <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached.</exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">The stream is closed.</exception>
         </member>
         <member name="T:WojciechMikołajewicz.BinaryWriterBase128">
             <summary>
