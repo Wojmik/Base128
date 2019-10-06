@@ -51,13 +51,13 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 				new OverflowTestSample(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01, }),
 			};
 
-		static IEnumerable<object[]> GetTestData()
+		public static IEnumerable<object[]> GetTestData()
 		{
 			return TestData
 				.Select(test => new object[] { test.Value, test.Serialized, });
 		}
 
-		static IEnumerable<object[]> GetOverflowTestData()
+		public static IEnumerable<object[]> GetOverflowTestData()
 		{
 			return OverflowTestData
 				.Select(test => new object[] { test.Serialized, });

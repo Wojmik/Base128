@@ -23,7 +23,7 @@ namespace WojciechMikołajewicz
 			{
 				val=source[read];
 				read++;
-				if(0<=(sbyte)source[read])
+				if(0<=(sbyte)val)
 					return true;
 			}
 			return false;
