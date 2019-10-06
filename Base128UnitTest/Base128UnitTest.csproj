@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
 
     <RootNamespace>WojciechMikołajewicz.Base128UnitTest</RootNamespace>
+		<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

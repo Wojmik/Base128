@@ -8,6 +8,7 @@ using System.Text;
 namespace WojciechMikołajewicz.Base128UnitTest
 {
 	public abstract class Base128StreamUnitTestBase<T>
+		where T : struct
 	{
 		protected abstract void WriteStream(BinaryWriterBase128 binaryWriter, T value);
 

@@ -220,3 +220,6 @@ Value coded this way is next serialized as unsigned integer.
 |  ulong, long  |              9 |              2⁶³-1 |               -2⁶² |              2⁶²-1 |
 |  ulong, long  |             10 |              2⁶⁴-1 |               -2⁶³ |              2⁶³-1 |
 
+## BinaryReader / BinaryWriter
+
+From version 1.1.0 in namespace WojciechMikołajewicz there are also BinaryReaderBase128 (derived from System.IO.BinaryReader) and BinaryWriterBase128 (derived from System.IO.BinaryWriter) for reading and writing variable length integers to and from Streams.
