@@ -94,6 +94,16 @@
             <param name="written">Number of bytes written</param>
             <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteUInt32(System.Span{System.Byte},System.UInt32,System.Int32,System.Int32@)">
+            <summary>
+            Method tries write 32-bit unsigned integer (<see cref="T:System.UInt32"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32(System.Span{System.Byte},System.Int32,System.Int32@)">
             <summary>
             Method tries write 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array
@@ -103,12 +113,32 @@
             <param name="written">Number of bytes written</param>
             <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32(System.Span{System.Byte},System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Method tries write 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32@)">
             <summary>
             Method tries write 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
             </summary>
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Method tries write 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
             <param name="written">Number of bytes written</param>
             <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
         </member>
@@ -165,6 +195,16 @@
             <param name="written">Number of bytes written</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt32"/></exception>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteUInt32(System.Span{System.Byte},System.UInt32,System.Int32,System.Int32@)">
+            <summary>
+            Method writes 32-bit unsigned integer (<see cref="T:System.UInt32"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt32"/></exception>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt32(System.Span{System.Byte},System.Int32,System.Int32@)">
             <summary>
             Method writes 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array
@@ -174,12 +214,32 @@
             <param name="written">Number of bytes written</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteInt32(System.Span{System.Byte},System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Method writes 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32@)">
             <summary>
             Method writes 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
             </summary>
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Method writes 32-bit signed integer (<see cref="T:System.Int32"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
             <param name="written">Number of bytes written</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
         </member>
@@ -222,6 +282,16 @@
             <param name="written">Number of bytes written</param>
             <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteUInt64(System.Span{System.Byte},System.UInt64,System.Int32,System.Int32@)">
+            <summary>
+            Method tries write 64-bit unsigned integer (<see cref="T:System.UInt64"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64(System.Span{System.Byte},System.Int64,System.Int32@)">
             <summary>
             Method tries write 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array
@@ -231,12 +301,32 @@
             <param name="written">Number of bytes written</param>
             <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64(System.Span{System.Byte},System.Int64,System.Int32,System.Int32@)">
+            <summary>
+            Method tries write 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32@)">
             <summary>
             Method tries write 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
             </summary>
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32,System.Int32@)">
+            <summary>
+            Method tries write 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
             <param name="written">Number of bytes written</param>
             <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
         </member>
@@ -293,6 +383,16 @@
             <param name="written">Number of bytes written</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt64"/></exception>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteUInt64(System.Span{System.Byte},System.UInt64,System.Int32,System.Int32@)">
+            <summary>
+            Method writes 64-bit unsigned integer (<see cref="T:System.UInt64"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt64"/></exception>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt64(System.Span{System.Byte},System.Int64,System.Int32@)">
             <summary>
             Method writes 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array
@@ -302,12 +402,32 @@
             <param name="written">Number of bytes written</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
         </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteInt64(System.Span{System.Byte},System.Int64,System.Int32,System.Int32@)">
+            <summary>
+            Method writes 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+        </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32@)">
             <summary>
             Method writes 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
             </summary>
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
+            <param name="written">Number of bytes written</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+        </member>
+        <member name="M:WojciechMikołajewicz.Base128.WriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32,System.Int32@)">
+            <summary>
+            Method writes 64-bit signed integer (<see cref="T:System.Int64"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+            </summary>
+            <param name="destination">Byte array to write <paramref name="value"/></param>
+            <param name="value">Value to serialize</param>
+            <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
             <param name="written">Number of bytes written</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
         </member>
