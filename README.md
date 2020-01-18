@@ -1,6 +1,10 @@
 ﻿# Base128 variable length integer serializer
 
-This is allocation free library for binary serializing and deserializing integer types as variable length integers.
+This is library for binary serializing and deserializing integer types as variable length integers.
+
+It is extremally fast, allocation free, documented and safe because it detects overflow.
+
+NuGet: https://www.nuget.org/packages/VarInt/
 
 ## What is it?
 
