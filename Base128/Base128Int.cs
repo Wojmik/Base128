@@ -43,6 +43,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static bool TryWriteUInt32(Span<byte> destination, uint value, int minBytesToWrite, out int written)
 		{
 			const int maxMinBytesToWrite = 5;
@@ -118,6 +119,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static bool TryWriteInt32(Span<byte> destination, int value, int minBytesToWrite, out int written)
 		{
 			const int maxMinBytesToWrite = 5;
@@ -175,6 +177,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static bool TryWriteInt32ZigZag(Span<byte> destination, int value, int minBytesToWrite, out int written)
 		{
 			return TryWriteUInt32(destination: destination, value: (uint)((value<<1)^(value>>31)), minBytesToWrite: minBytesToWrite, written: out written);
@@ -303,7 +306,7 @@ namespace WojciechMikołajewicz
 		{
 			int required;
 
-#if !NETSTANDARD2_0
+#if NETCOREAPP
 			if(System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
 				required=(31-(int)System.Runtime.Intrinsics.X86.Lzcnt.LeadingZeroCount(value))/7+1;
 			else
@@ -354,6 +357,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="uint"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteUInt32(Span<byte> destination, uint value, int minBytesToWrite, out int written)
 		{
 			if(!TryWriteUInt32(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
@@ -381,6 +385,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="int"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteInt32(Span<byte> destination, int value, int minBytesToWrite, out int written)
 		{
 			if(!TryWriteInt32(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
@@ -408,6 +413,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="int"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteInt32ZigZag(Span<byte> destination, int value, int minBytesToWrite, out int written)
 		{
 			if(!TryWriteInt32ZigZag(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+		<TargetFrameworks>netstandard1.1;netstandard2.0;netstandard2.1;netcoreapp3.0</TargetFrameworks>
 		<RootNamespace>WojciechMikołajewicz</RootNamespace>
 		<Authors>Wojciech Mikołajewicz</Authors>
 		<PackageTags>Variable Length Integer Base128 Serializer ZigZag</PackageTags>
@@ -26,5 +26,4 @@
 	<ItemGroup>
 	  <PackageReference Include="System.Memory" Version="4.5.3" />
 	</ItemGroup>
-
 </Project>

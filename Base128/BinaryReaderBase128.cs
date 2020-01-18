@@ -25,7 +25,7 @@ namespace WojciechMikołajewicz
 		/// <param name="input">The input stream.</param>
 		/// <param name="encoding">The character encoding to use.</param>
 		/// <exception cref="ArgumentException">The stream does not support reading, is null, or is already closed.</exception>
-		/// <exception cref="ArgumentNullException">encoding is null.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="encoding"/> is null.</exception>
 		public BinaryReaderBase128(Stream input, Encoding encoding)
 			: base(input, encoding)
 		{ }
@@ -37,7 +37,7 @@ namespace WojciechMikołajewicz
 		/// <param name="encoding">The character encoding to use.</param>
 		/// <param name="leaveOpen">true to leave the stream open after the System.IO.BinaryReader object is disposed; otherwise, false.</param>
 		/// <exception cref="ArgumentException">The stream does not support reading, is null, or is already closed.</exception>
-		/// <exception cref="ArgumentNullException">encoding or input is null.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="encoding"/> or <paramref name="input"/> is null.</exception>
 		public BinaryReaderBase128(Stream input, Encoding encoding, bool leaveOpen)
 			: base(input, encoding, leaveOpen)
 		{ }
@@ -60,7 +60,7 @@ namespace WojciechMikołajewicz
 				while(read<9*7)//Eventually last (tenth) byte treat special
 				{
 					value>>=7;
-					val=this.BaseStream.ReadByte();
+					val=this.ReadByte();
 					read+=7;
 					value|=(ulong)val<<57;//Shift val to the most significant byte and one bit more to cut overflow bit
 
@@ -71,13 +71,13 @@ namespace WojciechMikołajewicz
 				}
 
 				//If we are here it is the last (tenth) byte. There could be only one bit (64-9*7)
-				val=this.BaseStream.ReadByte();
+				val=this.ReadByte();
 				if(0!=(val&-2))//-2 = 0xFFFFFFFE
 				{
 					//End of stream or overflow detected
 					while(128<=val)//Read the rest of the overflowed value - to set Position after whole Base128 value
 					{
-						val=this.BaseStream.ReadByte();
+						val=this.ReadByte();
 					}
 					if(val<0)//End of stream
 						throw new EndOfStreamException();
@@ -105,7 +105,7 @@ namespace WojciechMikołajewicz
 				while(read<9*7)//Eventually last (tenth) byte treat special
 				{
 					value=(long)((ulong)value>>7);//Rotate unsigned - the most significant 7 bits have to be zeros. Next operation will be OR on those bits
-					val=this.BaseStream.ReadByte();
+					val=this.ReadByte();
 					read+=7;
 					value|=(long)val<<57;//Shift val to the most significant byte and one bit more to cut overflow bit
 
@@ -116,13 +116,13 @@ namespace WojciechMikołajewicz
 				}
 
 				//If we are here it is the last (tenth) byte. There could be only one bit (64-9*7)
-				val=this.BaseStream.ReadByte();
+				val=this.ReadByte();
 				if((uint)(val<<31>>6)>>25!=(uint)val)//val can be only 0b0000_0000 or 0b0111_1111
 				{
 					//End of stream or overflow detected
 					while(128<=val)//Read the rest of the overflowed value - to set Position after whole Base128 value
 					{
-						val=this.BaseStream.ReadByte();
+						val=this.ReadByte();
 					}
 					if(val<0)//End of stream
 						throw new EndOfStreamException();
@@ -166,7 +166,7 @@ namespace WojciechMikołajewicz
 				while(read<4*7)//Eventually last (fifth) byte treat special
 				{
 					value>>=7;
-					val=this.BaseStream.ReadByte();
+					val=this.ReadByte();
 					read+=7;
 					value|=(uint)val<<25;//Shift val to the most significant byte and one bit more to cut overflow bit
 
@@ -177,13 +177,13 @@ namespace WojciechMikołajewicz
 				}
 
 				//If we are here it is the last (fifth) byte. There could be only four bits (32-4*7)
-				val=this.BaseStream.ReadByte();
+				val=this.ReadByte();
 				if(0!=(val&-16))//-16 = 0xFFFFFFF0
 				{
 					//End of stream or overflow detected
 					while(128<=val)//Read the rest of the overflowed value - to set Position after whole Base128 value
 					{
-						val=this.BaseStream.ReadByte();
+						val=this.ReadByte();
 					}
 					if(val<0)//End of stream
 						throw new EndOfStreamException();
@@ -210,7 +210,7 @@ namespace WojciechMikołajewicz
 				while(read<4*7)//Eventually last (fifth) byte treat special
 				{
 					value=(int)((uint)value>>7);//Rotate unsigned - the most significant 7 bits have to be zeros. Next operation will be OR on those bits
-					val=this.BaseStream.ReadByte();
+					val=this.ReadByte();
 					read+=7;
 					value|=val<<25;//Shift val to the most significant byte and one bit more to cut overflow bit
 
@@ -221,13 +221,13 @@ namespace WojciechMikołajewicz
 				}
 
 				//If we are here it is the last (fifth) byte. There could be only four significant bits (32-4*7)
-				val=this.BaseStream.ReadByte();
+				val=this.ReadByte();
 				if((uint)(val<<28>>3)>>25!=(uint)val)//val can be only 0b0000_0xxx or 0b0111_1xxx
 				{
 					//End of stream or overflow detected
 					while(128<=val)//Read the rest of the overflowed value - to set Position after whole Base128 value
 					{
-						val=this.BaseStream.ReadByte();
+						val=this.ReadByte();
 					}
 					if(val<0)//End of stream
 						throw new EndOfStreamException();
@@ -379,7 +379,7 @@ namespace WojciechMikołajewicz
 
 			do
 			{
-				val=this.BaseStream.ReadByte();
+				val=this.ReadByte();
 			}
 			while(128<=val);//This avoids endless loop if val is -1 (end of stream)
 			if(val<0)//End of stream

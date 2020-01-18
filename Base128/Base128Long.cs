@@ -43,6 +43,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static bool TryWriteUInt64(Span<byte> destination, ulong value, int minBytesToWrite, out int written)
 		{
 			const int maxMinBytesToWrite = 10;
@@ -118,6 +119,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static bool TryWriteInt64(Span<byte> destination, long value, int minBytesToWrite, out int written)
 		{
 			const int maxMinBytesToWrite = 10;
@@ -175,6 +177,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static bool TryWriteInt64ZigZag(Span<byte> destination, long value, int minBytesToWrite, out int written)
 		{
 			return TryWriteUInt64(destination: destination, value: (ulong)((value<<1)^(value>>63)), minBytesToWrite: minBytesToWrite, written: out written);
@@ -306,7 +309,7 @@ namespace WojciechMikołajewicz
 			//Base 2 logarithm cannot be used because double can't store ulong with full precision so (int)Math.Log(0xFFFFFFFFFFFFFF, 2) should be 55 and is 56
 			//.Net Core 3.0 Math.ILogB method probably will not work too - for the same reason
 			//(double)0xFFFFFFFFFFFFFF is indistinguishable from (double)0x100000000000000
-#if !NETSTANDARD2_0
+#if NETCOREAPP
 			if(System.Runtime.Intrinsics.X86.Lzcnt.X64.IsSupported)
 				required=(63-(int)System.Runtime.Intrinsics.X86.Lzcnt.X64.LeadingZeroCount(value))/7+1;
 			else
@@ -355,6 +358,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="ulong"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteUInt64(Span<byte> destination, ulong value, int minBytesToWrite, out int written)
 		{
 			if(!TryWriteUInt64(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
@@ -382,6 +386,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteInt64(Span<byte> destination, long value, int minBytesToWrite, out int written)
 		{
 			if(!TryWriteInt64(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
@@ -409,6 +414,7 @@ namespace WojciechMikołajewicz
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteInt64ZigZag(Span<byte> destination, long value, int minBytesToWrite, out int written)
 		{
 			if(!TryWriteInt64ZigZag(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
