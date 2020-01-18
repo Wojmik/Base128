@@ -1,6 +1,6 @@
 ﻿# Base128 variable length integer serializer
 
-This is library for binary serializing and deserializing integer types as variable length integers.
+This is allocation free library for binary serializing and deserializing integer types as variable length integers.
 
 ## What is it?
 
@@ -46,7 +46,7 @@ Where source is place to deserialize value from, value is out variable witch des
 
 Those TryRead methods can throw an OverflowException if read value is too big or to small for destination integer type.
 
-All those above methods are defined also without Try prefix. In those cases they throw an ArgumentOutOfRangeException if there was not sufficient space to write a value or end of source was reached before whole value was read.
+All those above methods are defined also without Try prefix. In those cases they throw an ArgumentOutOfRangeException if there was insufficient space to write a value or end of source was reached before whole value was read.
 
 ### How many bytes are required to store particular value
 
@@ -220,6 +220,33 @@ Value coded this way is next serialized as unsigned integer.
 |  ulong, long  |              9 |              2⁶³-1 |               -2⁶² |              2⁶²-1 |
 |  ulong, long  |             10 |              2⁶⁴-1 |               -2⁶³ |              2⁶³-1 |
 
+## Write more bytes than is actually needed
+
+Sometimes it is reasonable to serialize value on more bytes than is actually needed. For example let's consider a string serialization in UTF-8. Suppose we want to serialize the size in bytes of the serialized string first, and string encoded in UTF-8 next. This way we can easy read serialized string on the other end – first read the size in bytes of the string, then read those number of bytes and finally deserialize string from bytes using UTF-8 decoder.
+
+![Serialized string](/Documentation/Serialized%20string.png)
+
+Let's return to serialization. It would be perfect if we could hold a place for string size in bytes, then serialize string and finally store size in bytes in the left hole. But how big the hole should be? Tough question. It is UTF-8 encoding so we don't know. We will known after we serialize string but we have to know before to reserve space for string size.
+
+Yes, we can use: `System.Text.Encoding.UTF8.GetByteCount("Our string")` but it is inefficient – we are processing string twice – first to calculate the number of bytes needed to store, second to actually store the string.
+
+Hmm, maybe we can get simply `"Our string".Length` or `System.Text.Encoding.UTF8.GetMaxByteCount("Our string".Length)` (this is simple multiplication) and assume this is the actual size of the string in bytes in UTF-8. But we can miss, and then we have to move whole memory block (in which the string is stored) to enlarge or decrease hole left for string size. But this is memory movement – inefficient also.
+
+Let's try again. This time calculate maximum size in bytes by `System.Text.Encoding.UTF8.GetMaxByteCount("Our string".Length)` – like before (simple multiplication) and accept that this can be too much. We only need to demand to store size of the string in whole hole left, even if sometimes it is to big.
+
+The good news is – we can 😀. There are overloaded versions of TryWrite and Write methods that accept `minBytesToWrite` parameter:
+
+```c#
+bool TryWriteUInt64(Span<byte> destination, ulong value, int minBytesToWrite, out int written);
+bool TryWriteUInt32(Span<byte> destination, uint value, int minBytesToWrite, out int written);
+bool TryWriteInt64(Span<byte> destination, long value, int minBytesToWrite, out int written);
+bool TryWriteInt32(Span<byte> destination, int value, int minBytesToWrite, out int written);
+bool TryWriteInt64ZigZag(Span<byte> destination, long value, int minBytesToWrite, out int written);
+bool TryWriteInt32ZigZag(Span<byte> destination, int value, int minBytesToWrite, out int written);
+```
+
+Those methods can store additional bytes, even if all significant bits have been stored already. There is a little limitation to not to confuse readers. Maximum allowed value for `minBytesToWrite` is 10 for `long` and `ulong` and 5 for `int` and `uint`. Those maximum values are the maximum number of bytes that those types can be serialized on (look at table in previous chapter). Also don't use more than 3 for `short` and `ushort` and more than 2 for `sbyte` and `byte`.
+
 ## BinaryReader / BinaryWriter
 
-From version 1.1.0 in namespace WojciechMikołajewicz there are also BinaryReaderBase128 (derived from System.IO.BinaryReader) and BinaryWriterBase128 (derived from System.IO.BinaryWriter) for reading and writing variable length integers to and from Streams.
+In namespace WojciechMikołajewicz there are also BinaryReaderBase128 (derived from System.IO.BinaryReader) and BinaryWriterBase128 (derived from System.IO.BinaryWriter) for reading and writing variable length integers to and from Streams.
