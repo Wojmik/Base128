@@ -15,21 +15,62 @@ namespace WojciechMikołajewicz
 		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
 		public static bool TryWriteUInt64(Span<byte> destination, ulong value, out int written)
 		{
-			byte val;
-
 			written=0;
 			
 			unchecked
 			{
 				while(written<destination.Length)
 				{
-					val=(byte)(value&0x7F);
-					if(0!=(value&0xFFFFFFFFFFFFFF80UL))
-						val|=0x80;
-					destination[written]=val;
-					written++;
-					if(0<=(sbyte)val)
+					if(0==(value&0xFFFFFFFFFFFFFF80UL))//The last byte
+					{
+						destination[written]=(byte)(value&0x7F);
+						written++;
 						return true;
+					}
+					destination[written]=(byte)(value&0x7F|0x80);
+					written++;
+					value>>=7;
+				}
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Method tries write 64-bit unsigned integer (<see cref="ulong"/>) to byte array
+		/// </summary>
+		/// <param name="destination">Byte array to write <paramref name="value"/></param>
+		/// <param name="value">Value to serialize</param>
+		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+		/// <param name="written">Number of bytes written</param>
+		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		public static bool TryWriteUInt64(Span<byte> destination, ulong value, int minBytesToWrite, out int written)
+		{
+			const int maxMinBytesToWrite = 10;
+
+			written=0;
+
+			unchecked
+			{
+				//Subtract one here to not to subtract in every loop's iteration
+				minBytesToWrite--;
+				if(maxMinBytesToWrite<=minBytesToWrite)
+				{
+					if(minBytesToWrite!=int.MaxValue)//If it was int.MinValue, subtract one is int.MaxValue, but it was ok, so do not throw exception
+						throw new ArgumentException($"{nameof(minBytesToWrite)} cannot be greater than {maxMinBytesToWrite}", nameof(minBytesToWrite));
+					minBytesToWrite=0;//Correct int.MaxValue to zero (which effectively means one)
+				}
+
+				while(written<destination.Length)
+				{
+					if(0==(value&0xFFFFFFFFFFFFFF80UL) && minBytesToWrite<=written)//The last byte
+					{
+						destination[written]=(byte)(value&0x7F);
+						written++;
+						return true;
+					}
+					destination[written]=(byte)(value&0x7F|0x80);
+					written++;
 					value>>=7;
 				}
 				return false;
@@ -46,23 +87,70 @@ namespace WojciechMikołajewicz
 		public static bool TryWriteInt64(Span<byte> destination, long value, out int written)
 		{
 			long insignificantValue;
-			byte val;
 
 			written=0;
-			//Zero all bits except most significant bit (sign bit) and copy this bit 57 times to right
-			insignificantValue=(value&long.MinValue)>>57;//value>=0 ? 0 : -64 (-64 = 0xFFFFFFFFFFFFFFC0)
 
 			unchecked
 			{
+				//Zero all bits except most significant bit (sign bit) and copy this bit 57 times to right
+				insignificantValue=(value&long.MinValue)>>57;//value>=0 ? 0 : -64 (-64 = 0xFFFFFFFFFFFFFFC0)
+
 				while(written<destination.Length)
 				{
-					val=(byte)(value&0x7F);
-					if(insignificantValue!=(value&-64L))//-64 = 0xFFFFFFFFFFFFFFC0
-						val|=0x80;
-					destination[written]=val;
-					written++;
-					if(0<=(sbyte)val)
+					if(insignificantValue==(value&-64L))//-64 = 0xFFFFFFFFFFFFFFC0. The last byte
+					{
+						destination[written]=(byte)(value&0x7F);
+						written++;
 						return true;
+					}
+					destination[written]=(byte)(value&0x7F|0x80);
+					written++;
+					value>>=7;
+				}
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Method tries write 64-bit signed integer (<see cref="long"/>) to byte array
+		/// </summary>
+		/// <param name="destination">Byte array to write <paramref name="value"/></param>
+		/// <param name="value">Value to serialize</param>
+		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+		/// <param name="written">Number of bytes written</param>
+		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		public static bool TryWriteInt64(Span<byte> destination, long value, int minBytesToWrite, out int written)
+		{
+			const int maxMinBytesToWrite = 10;
+			long insignificantValue;
+
+			written=0;
+
+			unchecked
+			{
+				//Subtract one here to not to subtract in every loop's iteration
+				minBytesToWrite--;
+				if(maxMinBytesToWrite<=minBytesToWrite)
+				{
+					if(minBytesToWrite!=int.MaxValue)//If it was int.MinValue, subtract one is int.MaxValue, but it was ok, so do not throw exception
+						throw new ArgumentException($"{nameof(minBytesToWrite)} cannot be greater than {maxMinBytesToWrite}", nameof(minBytesToWrite));
+					minBytesToWrite=0;//Correct int.MaxValue to zero (which effectively means one)
+				}
+
+				//Zero all bits except most significant bit (sign bit) and copy this bit 57 times to right
+				insignificantValue=(value&long.MinValue)>>57;//value>=0 ? 0 : -64 (-64 = 0xFFFFFFFFFFFFFFC0)
+
+				while(written<destination.Length)
+				{
+					if(insignificantValue==(value&-64L) && minBytesToWrite<=written)//-64 = 0xFFFFFFFFFFFFFFC0. The last byte
+					{
+						destination[written]=(byte)(value&0x7F);
+						written++;
+						return true;
+					}
+					destination[written]=(byte)(value&0x7F|0x80);
+					written++;
 					value>>=7;
 				}
 				return false;
@@ -79,6 +167,20 @@ namespace WojciechMikołajewicz
 		public static bool TryWriteInt64ZigZag(Span<byte> destination, long value, out int written)
 		{
 			return TryWriteUInt64(destination: destination, value: (ulong)((value<<1)^(value>>63)), written: out written);
+		}
+
+		/// <summary>
+		/// Method tries write 64-bit signed integer (<see cref="long"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+		/// </summary>
+		/// <param name="destination">Byte array to write <paramref name="value"/></param>
+		/// <param name="value">Value to serialize</param>
+		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+		/// <param name="written">Number of bytes written</param>
+		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		public static bool TryWriteInt64ZigZag(Span<byte> destination, long value, int minBytesToWrite, out int written)
+		{
+			return TryWriteUInt64(destination: destination, value: (ulong)((value<<1)^(value>>63)), minBytesToWrite: minBytesToWrite, written: out written);
 		}
 
 		/// <summary>
@@ -207,7 +309,7 @@ namespace WojciechMikołajewicz
 			//Base 2 logarithm cannot be used because double can't store ulong with full precision so (int)Math.Log(0xFFFFFFFFFFFFFF, 2) should be 55 and is 56
 			//.Net Core 3.0 Math.ILogB method probably will not work too - for the same reason
 			//(double)0xFFFFFFFFFFFFFF is indistinguishable from (double)0x100000000000000
-#if !NETSTANDARD2_0
+#if NETCOREAPP
 			if(System.Runtime.Intrinsics.X86.Lzcnt.X64.IsSupported)
 				required=(63-(int)System.Runtime.Intrinsics.X86.Lzcnt.X64.LeadingZeroCount(value))/7+1;
 			else
@@ -249,6 +351,21 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
+		/// Method writes 64-bit unsigned integer (<see cref="ulong"/>) to byte array
+		/// </summary>
+		/// <param name="destination">Byte array to write <paramref name="value"/></param>
+		/// <param name="value">Value to serialize</param>
+		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+		/// <param name="written">Number of bytes written</param>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="ulong"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		public static void WriteUInt64(Span<byte> destination, ulong value, int minBytesToWrite, out int written)
+		{
+			if(!TryWriteUInt64(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
+				throw new ArgumentOutOfRangeException(nameof(destination), $"{nameof(destination)} is too small to contain an UInt64");
+		}
+
+		/// <summary>
 		/// Method writes 64-bit signed integer (<see cref="long"/>) to byte array
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
@@ -262,6 +379,21 @@ namespace WojciechMikołajewicz
 		}
 
 		/// <summary>
+		/// Method writes 64-bit signed integer (<see cref="long"/>) to byte array
+		/// </summary>
+		/// <param name="destination">Byte array to write <paramref name="value"/></param>
+		/// <param name="value">Value to serialize</param>
+		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+		/// <param name="written">Number of bytes written</param>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		public static void WriteInt64(Span<byte> destination, long value, int minBytesToWrite, out int written)
+		{
+			if(!TryWriteInt64(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
+				throw new ArgumentOutOfRangeException(nameof(destination), $"{nameof(destination)} is too small to contain an Int64");
+		}
+
+		/// <summary>
 		/// Method writes 64-bit signed integer (<see cref="long"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
@@ -271,6 +403,21 @@ namespace WojciechMikołajewicz
 		public static void WriteInt64ZigZag(Span<byte> destination, long value, out int written)
 		{
 			if(!TryWriteInt64ZigZag(destination: destination, value: value, written: out written))
+				throw new ArgumentOutOfRangeException(nameof(destination), $"{nameof(destination)} is too small to contain an Int64");
+		}
+
+		/// <summary>
+		/// Method writes 64-bit signed integer (<see cref="long"/>) to byte array with ZigZag coding (sign bit as the least significant bit)
+		/// </summary>
+		/// <param name="destination">Byte array to write <paramref name="value"/></param>
+		/// <param name="value">Value to serialize</param>
+		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
+		/// <param name="written">Number of bytes written</param>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		public static void WriteInt64ZigZag(Span<byte> destination, long value, int minBytesToWrite, out int written)
+		{
+			if(!TryWriteInt64ZigZag(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
 				throw new ArgumentOutOfRangeException(nameof(destination), $"{nameof(destination)} is too small to contain an Int64");
 		}
 

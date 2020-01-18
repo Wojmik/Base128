@@ -87,9 +87,16 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 				.Select(test => new object[] { test.Serialized, });
 		}
 
+		protected override int MaxMinBytesToWrite { get => 10; }
+
 		protected override bool TryWrite(Span<byte> destination, long value, out int written)
 		{
 			return Base128.TryWriteInt64(destination: destination, value: value, written: out written);
+		}
+
+		protected override bool TryWrite(Span<byte> destination, long value, int minBytesToWrite, out int written)
+		{
+			return Base128.TryWriteInt64(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written);
 		}
 
 		protected override bool TryRead(Span<byte> source, out long value, out int read)
@@ -102,6 +109,7 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 			return Base128.GetRequiredBytesInt64(value);
 		}
 
+		#region TryWrite
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryWriteInt64TestMethod(long value, byte[] serialized)
@@ -111,18 +119,20 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public virtual void TryWriteInt64LongerBufTestMethod(long value, byte[] serialized)
+		public void TryWriteInt64LongerBufTestMethod(long value, byte[] serialized)
 		{
 			TryWriteLongerBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public virtual void TryWriteInt64EndOfBufTestMethod(long value, byte[] serialized)
+		public void TryWriteInt64EndOfBufTestMethod(long value, byte[] serialized)
 		{
 			TryWriteEndOfBufTestMethod(value, serialized);
 		}
+		#endregion
 
+		#region TryRead
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void TryReadInt64TestMethod(long value, byte[] serialized)
@@ -132,14 +142,14 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public virtual void TryReadInt64LongerBufTestMethod(long value, byte[] serialized)
+		public void TryReadInt64LongerBufTestMethod(long value, byte[] serialized)
 		{
 			TryReadLongerBufTestMethod(value, serialized);
 		}
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
-		public virtual void TryReadInt64EndOfBufTestMethod(long value, byte[] serialized)
+		public void TryReadInt64EndOfBufTestMethod(long value, byte[] serialized)
 		{
 			TryReadEndOfBufTestMethod(value, serialized);
 		}
@@ -150,12 +160,82 @@ namespace WojciechMikołajewicz.Base128UnitTest.Long
 		{
 			TryReadOverflowTestMethod(serialized);
 		}
+		#endregion
 
+		#region GetRequiredBytes
 		[DataTestMethod]
 		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
 		public void GetRequiredBytesInt64TestMethod(long value, byte[] serialized)
 		{
 			GetRequiredBytesTestMethod(value, serialized);
 		}
+		#endregion
+
+		#region TryWriteWithMinimum
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryWriteInt64WithMinimum0TestMethod(long value, byte[] serialized)
+		{
+			TryWriteWithMinimum0TestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryWriteInt64WithMinimum1TestMethod(long value, byte[] serialized)
+		{
+			TryWriteWithMinimum1TestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryWriteInt64WithMinimumMinValueTestMethod(long value, byte[] serialized)
+		{
+			TryWriteWithMinimumMinValueTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryWriteInt64WithMinimumMinValuePlusOneTestMethod(long value, byte[] serialized)
+		{
+			TryWriteWithMinimumMinValuePlusOneTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryWriteInt64WithMinimumOneOverTestMethod(long value, byte[] serialized)
+		{
+			TryWriteSignedWithMinimumOneOverTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryWriteInt64WithMinimumMaxOverTestMethod(long value, byte[] serialized)
+		{
+			TryWriteSignedWithMinimumMaxOverTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryWriteInt64WithMinimumMaxOverPlusOneTestMethod(long value, byte[] serialized)
+		{
+			TryWriteWithMinimumMaxOverPlusOneTestMethod(value, serialized);
+		}
+		#endregion
+
+		#region TryReadWithMinimum
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryReadInt64WithMinimumOneOverTestMethod(long value, byte[] serialized)
+		{
+			TryReadSignedWithMinimumOneOverTestMethod(value, serialized);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetTestData), dynamicDataSourceType: DynamicDataSourceType.Method)]
+		public void TryReadInt64WithMinimumMaxOverTestMethod(long value, byte[] serialized)
+		{
+			TryReadSignedWithMinimumMaxOverTestMethod(value, serialized);
+		}
+		#endregion
 	}
 }

@@ -10,17 +10,19 @@ namespace WojciechMikołajewicz
 	/// </summary>
 	public class BinaryWriterBase128 : BinaryWriter
 	{
+#if NETSTANDARD1_1 || NETSTANDARD2_0
 		/// <summary>
 		/// Internal buffer for serializing
 		/// </summary>
-		private readonly byte[] Buf = new byte[10];
+		private readonly byte[] buf = new byte[10];
+#endif
 
 		/// <summary>
 		/// Initializes a new instance of the System.IO.BinaryWriter class based on the specified stream and using UTF-8 encoding.
 		/// </summary>
 		/// <param name="output">The output stream.</param>
 		/// <exception cref="ArgumentException">The stream does not support writing or is already closed.</exception>
-		/// <exception cref="ArgumentNullException">output is null.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="output"/> is null.</exception>
 		public BinaryWriterBase128(Stream output)
 			: base(output)
 		{ }
@@ -31,7 +33,7 @@ namespace WojciechMikołajewicz
 		/// <param name="output">The output stream.</param>
 		/// <param name="encoding">The character encoding to use.</param>
 		/// <exception cref="ArgumentException">The stream does not support writing or is already closed.</exception>
-		/// <exception cref="ArgumentNullException">output or encoding is null.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="output"/> or <paramref name="encoding"/> is null.</exception>
 		public BinaryWriterBase128(Stream output, Encoding encoding)
 			: base(output, encoding)
 		{ }
@@ -43,7 +45,7 @@ namespace WojciechMikołajewicz
 		/// <param name="encoding">The character encoding to use.</param>
 		/// <param name="leaveOpen">true to leave the stream open after the System.IO.BinaryWriter object is disposed; otherwise, false.</param>
 		/// <exception cref="ArgumentException">The stream does not support writing or is already closed.</exception>
-		/// <exception cref="ArgumentNullException">output or encoding is null.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="output"/> or <paramref name="encoding"/> is null.</exception>
 		public BinaryWriterBase128(Stream output, Encoding encoding, bool leaveOpen)
 			: base(output, encoding, leaveOpen)
 		{ }
@@ -56,10 +58,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(ulong value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[10];
+#endif
 			int written;
 			
-			Base128.WriteUInt64(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteUInt64(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -70,10 +79,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(long value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[10];
+#endif
 			int written;
 
-			Base128.WriteInt64(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteInt64(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -84,10 +100,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128ZigZag(long value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[10];
+#endif
 			int written;
 
-			Base128.WriteInt64ZigZag(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteInt64ZigZag(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -98,10 +121,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(uint value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[5];
+#endif
 			int written;
 			
-			Base128.WriteUInt32(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteUInt32(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -112,10 +142,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(int value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[5];
+#endif
 			int written;
 
-			Base128.WriteInt32(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteInt32(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -126,10 +163,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128ZigZag(int value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[5];
+#endif
 			int written;
 
-			Base128.WriteInt32ZigZag(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteInt32ZigZag(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -140,10 +184,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(ushort value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[3];
+#endif
 			int written;
 
-			Base128.WriteUInt32(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteUInt32(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -154,10 +205,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(short value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[3];
+#endif
 			int written;
 
-			Base128.WriteInt32(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteInt32(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -168,10 +226,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128ZigZag(short value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[3];
+#endif
 			int written;
 
-			Base128.WriteInt32ZigZag(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteInt32ZigZag(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -182,10 +247,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(byte value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[2];
+#endif
 			int written;
 			
-			Base128.WriteUInt32(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteUInt32(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -196,10 +268,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(sbyte value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[2];
+#endif
 			int written;
 			
-			Base128.WriteInt32(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteInt32(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 
 		/// <summary>
@@ -210,10 +289,17 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128ZigZag(sbyte value)
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+			Span<byte> buf = stackalloc byte[2];
+#endif
 			int written;
 
-			Base128.WriteInt32ZigZag(destination: this.Buf, value: value, written: out written);
-			this.OutStream.Write(Buf, 0, written);
+			Base128.WriteInt32ZigZag(destination: buf, value: value, written: out written);
+#if NETSTANDARD1_1 || NETSTANDARD2_0
+			this.Write(buf, 0, written);
+#else
+			this.Write(buf.Slice(0, written));
+#endif
 		}
 	}
 }
