@@ -61,7 +61,7 @@ int GetRequiredBytesInt64(long value);
 int GetRequiredBytesInt32(int value);
 ```
 
-Where value is the value to check and return value is the number of required bytes to store argument value.
+Where value is the value to check and return value is the number of required bytes to store argument value. ZigZag takes exactly the same bits as signed serialization so methods with long and int argument are suitable for ZigZag too.
 
 Try not to use those methods. Better assume there is enough space in destination and check return value of TryWrite methods to make sure.
 
