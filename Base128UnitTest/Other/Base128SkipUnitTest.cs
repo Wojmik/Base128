@@ -59,6 +59,7 @@ namespace WojciechMikołajewicz.Base128UnitTest.Other
 
 			success=Base128.TrySkip(source: serialized.AsSpan(0, serialized.Length-1), read: out read);
 			Assert.IsFalse(success);
+			Assert.AreEqual(expected: 0, actual: read);
 		}
 	}
 }

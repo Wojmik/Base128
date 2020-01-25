@@ -1,6 +1,6 @@
 ﻿# Base128 variable length integer serializer
 
-This is library for binary serializing and deserializing integer types as variable length integers.
+This is .Net library for binary serializing and deserializing integer types as variable length integers.
 
 It is extremally fast, allocation free, documented and safe because it detects overflow.
 
@@ -25,9 +25,11 @@ bool TryWriteInt64ZigZag(Span<byte> destination, long value, out int written);
 bool TryWriteInt32ZigZag(Span<byte> destination, int value, out int written);
 ```
 
-Where destination is place to serialize value to, value is the value to serialize, written is out variable indicating how many bytes was written to destination and return value indicates if operation succeed (it can be false if there was not enough room in the destination to serialize whole value).
+Where `destination` is place to serialize value to, `value` is the value to serialize, `written` is out variable indicating how many bytes was written to destination and `return value` indicates if operation succeed (it can be false if there was not enough room in the destination to serialize whole value).
 
-To write ushort, short, byte or sbyte use one of TryWrite32 method.
+If operation fails – return false, `written` will be set to zero but whole `destination` will be polluted by partially written `value`. This is for performance reason. As you cannot continue failed operation, you have to start from scratch, `written` set to zero can save you one if statement.
+
+To write `ushort`, `short`, `byte` or `sbyte` use one of `TryWrite32` method.
 
 ### Deserialize integer values
 
@@ -46,11 +48,13 @@ bool TryReadInt16ZigZag(ReadOnlySpan<byte> source, out short value, out int read
 bool TryReadInt8ZigZag(ReadOnlySpan<byte> source, out sbyte value, out int read);
 ```
 
-Where source is place to deserialize value from, value is out variable witch deserialized value, read is out variable indicating how many bytes was read from source and return value indicates if operation succeed (it can be false if end of source was reached before whole value was read).
+Where `source` is place to deserialize value from, `value` is out variable witch deserialized value, `read` is out variable indicating how many bytes was read from source and `return value` indicates if operation succeed (it can be false if end of source was reached before whole value was read).
 
-Those TryRead methods can throw an OverflowException if read value is too big or to small for destination integer type.
+Those `TryRead` methods can throw an `OverflowException` if read value is too big or to small for destination integer type.
 
-All those above methods are defined also without Try prefix. In those cases they throw an ArgumentOutOfRangeException if there was insufficient space to write a value or end of source was reached before whole value was read.
+If operation fails – return false, `value` and `read` will be set to zero. This is for performance reason. As you cannot continue failed operation, you have to start from scratch, `read` set to zero can save you one if statement.
+
+All those above methods are defined also without Try prefix. In those cases they throw an `ArgumentOutOfRangeException` if there was insufficient space to write a value or end of source was reached before whole value was read.
 
 ### How many bytes are required to store particular value
 
@@ -61,9 +65,9 @@ int GetRequiredBytesInt64(long value);
 int GetRequiredBytesInt32(int value);
 ```
 
-Where value is the value to check and return value is the number of required bytes to store argument value. ZigZag takes exactly the same bits as signed serialization so methods with long and int argument are suitable for ZigZag too.
+Where `value` is the value to check and `return value` is the number of required bytes to store argument value. ZigZag use exactly the same bits as signed serialization so methods with `long` and `int` argument are suitable for ZigZag too.
 
-Try not to use those methods. Better assume there is enough space in destination and check return value of TryWrite methods to make sure.
+Try not to use those methods. Better assume there is enough space in destination and check return value of `TryWrite` methods to make sure.
 
 ### Skip value
 
@@ -73,9 +77,9 @@ Sometimes we only want to skip a value, not reading it. For this purpose there i
 bool TrySkip(ReadOnlySpan<byte> source, out int read);
 ```
 
-Where source is a place with serialized value, read is out variable indicates how many bytes was skipped and return value indicates if operation succeed (it can be false if end of source was reached before whole value was skipped).
+Where `source` is a place with serialized value, `read` is out variable indicates how many bytes was skipped and `return value` indicates if operation succeed (it can be false if end of source was reached before whole value was skipped, `read` will be set to zero in that case).
 
-There is also Skip method which throws an ArgumentOutOfRangeException instead of returning false.
+There is also `Skip` method which throws an `ArgumentOutOfRangeException` instead of returning false.
 
 ## How it works?
 
@@ -167,7 +171,7 @@ Binary representation of last two bytes is:
 
 ![Example signed -283 input](/Documentation/Example%20signed%20-283%20input.png)
 
-Significant bits are green. First set bit (from right) before series of all set bit is the last significant bit.
+Significant bits are green. First set bit (from right) before series of all set bits is the last significant bit.
 
 After serialization the value looks like:
 
