@@ -6,13 +6,17 @@ namespace WojciechMikołajewicz
 {
 	partial class Base128
 	{
+		#region TryWrite
 		/// <summary>
 		/// Method tries write 64-bit unsigned integer (<see cref="ulong"/>) to byte array
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+		/// <remarks>
+		/// If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+		/// </remarks>
 		public static bool TryWriteUInt64(Span<byte> destination, ulong value, out int written)
 		{
 			written=0;
@@ -31,6 +35,7 @@ namespace WojciechMikołajewicz
 					written++;
 					value>>=7;
 				}
+				written=0;
 				return false;
 			}
 		}
@@ -42,8 +47,11 @@ namespace WojciechMikołajewicz
 		/// <param name="value">Value to serialize</param>
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
 		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		/// <remarks>
+		/// If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+		/// </remarks>
 		public static bool TryWriteUInt64(Span<byte> destination, ulong value, int minBytesToWrite, out int written)
 		{
 			const int maxMinBytesToWrite = 10;
@@ -73,6 +81,7 @@ namespace WojciechMikołajewicz
 					written++;
 					value>>=7;
 				}
+				written=0;
 				return false;
 			}
 		}
@@ -83,7 +92,10 @@ namespace WojciechMikołajewicz
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+		/// <remarks>
+		/// If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+		/// </remarks>
 		public static bool TryWriteInt64(Span<byte> destination, long value, out int written)
 		{
 			long insignificantValue;
@@ -107,6 +119,7 @@ namespace WojciechMikołajewicz
 					written++;
 					value>>=7;
 				}
+				written=0;
 				return false;
 			}
 		}
@@ -118,8 +131,11 @@ namespace WojciechMikołajewicz
 		/// <param name="value">Value to serialize</param>
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
 		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		/// <remarks>
+		/// If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+		/// </remarks>
 		public static bool TryWriteInt64(Span<byte> destination, long value, int minBytesToWrite, out int written)
 		{
 			const int maxMinBytesToWrite = 10;
@@ -153,6 +169,7 @@ namespace WojciechMikołajewicz
 					written++;
 					value>>=7;
 				}
+				written=0;
 				return false;
 			}
 		}
@@ -163,7 +180,10 @@ namespace WojciechMikołajewicz
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+		/// <remarks>
+		/// If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+		/// </remarks>
 		public static bool TryWriteInt64ZigZag(Span<byte> destination, long value, out int written)
 		{
 			return TryWriteUInt64(destination: destination, value: (ulong)((value<<1)^(value>>63)), written: out written);
@@ -176,21 +196,28 @@ namespace WojciechMikołajewicz
 		/// <param name="value">Value to serialize</param>
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+		/// <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
 		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+		/// <remarks>
+		/// If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+		/// </remarks>
 		public static bool TryWriteInt64ZigZag(Span<byte> destination, long value, int minBytesToWrite, out int written)
 		{
 			return TryWriteUInt64(destination: destination, value: (ulong)((value<<1)^(value>>63)), minBytesToWrite: minBytesToWrite, written: out written);
 		}
-
+		#endregion
+		#region TryRead
 		/// <summary>
 		/// Method tries to read 64-bit unsigned integer (<see cref="ulong"/>) from byte array
 		/// </summary>
 		/// <param name="source">Byte array from which read <paramref name="value"/></param>
 		/// <param name="value">Read value</param>
 		/// <param name="read">Number of bytes read</param>
-		/// <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+		/// <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
 		/// <exception cref="OverflowException">Read value is too big for <see cref="ulong"/></exception>
+		/// <remarks>
+		/// If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+		/// </remarks>
 		public static bool TryReadUInt64(ReadOnlySpan<byte> source, out ulong value, out int read)
 		{
 			byte val;
@@ -227,6 +254,7 @@ namespace WojciechMikołajewicz
 					return true;
 				}
 				value=0;
+				read=0;
 				return false;
 			}
 		}
@@ -237,8 +265,11 @@ namespace WojciechMikołajewicz
 		/// <param name="source">Byte array from which read <paramref name="value"/></param>
 		/// <param name="value">Read value</param>
 		/// <param name="read">Number of bytes read</param>
-		/// <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+		/// <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
 		/// <exception cref="OverflowException">Read value is too big or too small for <see cref="long"/></exception>
+		/// <remarks>
+		/// If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+		/// </remarks>
 		public static bool TryReadInt64(ReadOnlySpan<byte> source, out long value, out int read)
 		{
 			byte val;
@@ -275,6 +306,7 @@ namespace WojciechMikołajewicz
 					return true;
 				}
 				value=0;
+				read=0;
 				return false;
 			}
 		}
@@ -285,8 +317,11 @@ namespace WojciechMikołajewicz
 		/// <param name="source">Byte array from which read <paramref name="value"/></param>
 		/// <param name="value">Read value</param>
 		/// <param name="read">Number of bytes read</param>
-		/// <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+		/// <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
 		/// <exception cref="OverflowException">Read value is too big or too small for <see cref="long"/></exception>
+		/// <remarks>
+		/// If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+		/// </remarks>
 		public static bool TryReadInt64ZigZag(ReadOnlySpan<byte> source, out long value, out int read)
 		{
 			ulong uValue;
@@ -296,7 +331,8 @@ namespace WojciechMikołajewicz
 			value=(long)(uValue>>1)^-(long)(uValue&1);
 			return success;
 		}
-
+		#endregion
+		#region GetRequiredBytes
 		/// <summary>
 		/// Method returns number of bytes required to store <see cref="ulong"/> <paramref name="value"/>
 		/// </summary>
@@ -336,14 +372,15 @@ namespace WojciechMikołajewicz
 			//long and ZigZag take exactly the same bits, but ZigZag changes value to ulong and ulong can be calculated using Lzcnt, so do so
 			return GetRequiredBytesUInt64((ulong)((value<<1)^(value>>63)));
 		}
-
+		#endregion
+		#region Write
 		/// <summary>
 		/// Method writes 64-bit unsigned integer (<see cref="ulong"/>) to byte array
 		/// </summary>
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="ulong"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
 		public static void WriteUInt64(Span<byte> destination, ulong value, out int written)
 		{
 			if(!TryWriteUInt64(destination: destination, value: value, written: out written))
@@ -357,7 +394,7 @@ namespace WojciechMikołajewicz
 		/// <param name="value">Value to serialize</param>
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="ulong"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
 		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteUInt64(Span<byte> destination, ulong value, int minBytesToWrite, out int written)
 		{
@@ -371,7 +408,7 @@ namespace WojciechMikołajewicz
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
 		public static void WriteInt64(Span<byte> destination, long value, out int written)
 		{
 			if(!TryWriteInt64(destination: destination, value: value, written: out written))
@@ -385,7 +422,7 @@ namespace WojciechMikołajewicz
 		/// <param name="value">Value to serialize</param>
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
 		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteInt64(Span<byte> destination, long value, int minBytesToWrite, out int written)
 		{
@@ -399,7 +436,7 @@ namespace WojciechMikołajewicz
 		/// <param name="destination">Byte array to write <paramref name="value"/></param>
 		/// <param name="value">Value to serialize</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
 		public static void WriteInt64ZigZag(Span<byte> destination, long value, out int written)
 		{
 			if(!TryWriteInt64ZigZag(destination: destination, value: value, written: out written))
@@ -413,21 +450,22 @@ namespace WojciechMikołajewicz
 		/// <param name="value">Value to serialize</param>
 		/// <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
 		/// <param name="written">Number of bytes written</param>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
 		/// <exception cref="ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
 		public static void WriteInt64ZigZag(Span<byte> destination, long value, int minBytesToWrite, out int written)
 		{
 			if(!TryWriteInt64ZigZag(destination: destination, value: value, minBytesToWrite: minBytesToWrite, written: out written))
 				throw new ArgumentOutOfRangeException(nameof(destination), $"{nameof(destination)} is too small to contain an Int64");
 		}
-
+		#endregion
+		#region Read
 		/// <summary>
 		/// Method reads 64-bit unsigned integer (<see cref="ulong"/>) from byte array
 		/// </summary>
 		/// <param name="source">Byte array from which read value</param>
 		/// <param name="read">Number of bytes read</param>
 		/// <returns>Read value</returns>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="ulong"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
 		/// <exception cref="OverflowException">Read value is too big for <see cref="ulong"/></exception>
 		public static ulong ReadUInt64(ReadOnlySpan<byte> source, out int read)
 		{
@@ -444,7 +482,7 @@ namespace WojciechMikołajewicz
 		/// <param name="source">Byte array from which read value</param>
 		/// <param name="read">Number of bytes read</param>
 		/// <returns>Read value</returns>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
 		/// <exception cref="OverflowException">Read value is too big for <see cref="long"/></exception>
 		public static long ReadInt64(ReadOnlySpan<byte> source, out int read)
 		{
@@ -461,7 +499,7 @@ namespace WojciechMikołajewicz
 		/// <param name="source">Byte array from which read value</param>
 		/// <param name="read">Number of bytes read</param>
 		/// <returns>Read value</returns>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="long"/></exception>
+		/// <exception cref="ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
 		/// <exception cref="OverflowException">Read value is too big for <see cref="long"/></exception>
 		public static long ReadInt64ZigZag(ReadOnlySpan<byte> source, out int read)
 		{
@@ -471,5 +509,6 @@ namespace WojciechMikołajewicz
 				throw new ArgumentOutOfRangeException(nameof(source), $"{nameof(source)} is too small to contain an Int64");
 			return value;
 		}
+		#endregion
 	}
 }

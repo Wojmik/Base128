@@ -51,6 +51,7 @@ namespace WojciechMikołajewicz.Base128UnitTest
 
 			success=TryWrite(destination: buf, value: value, written: out written);
 			Assert.IsFalse(success);
+			Assert.AreEqual(expected: 0, actual: written);
 		}
 		#endregion
 
@@ -90,6 +91,7 @@ namespace WojciechMikołajewicz.Base128UnitTest
 			success=TryRead(source: serialized.AsSpan(0, serialized.Length-1), value: out readValue, read: out read);
 			Assert.IsFalse(success);
 			Assert.AreEqual(default, readValue);
+			Assert.AreEqual(expected: 0, actual: read);
 		}
 
 		public virtual void TryReadOverflowTestMethod(byte[] serialized)

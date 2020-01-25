@@ -15,7 +15,10 @@
             </summary>
             <param name="source">Byte array</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole value was skipped</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole value was skipped</returns>
+            <remarks>
+            If method return false, <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.Skip(System.ReadOnlySpan{System.Byte},System.Int32@)">
             <summary>
@@ -32,8 +35,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Byte"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadInt8(System.ReadOnlySpan{System.Byte},System.SByte@,System.Int32@)">
             <summary>
@@ -42,8 +48,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.SByte"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadInt8ZigZag(System.ReadOnlySpan{System.Byte},System.SByte@,System.Int32@)">
             <summary>
@@ -52,8 +61,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.SByte"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadUInt8(System.ReadOnlySpan{System.Byte},System.Int32@)">
             <summary>
@@ -62,7 +74,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Byte"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Byte"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadInt8(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -72,7 +84,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.SByte"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.SByte"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadInt8ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -82,7 +94,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.SByte"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.SByte"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteUInt32(System.Span{System.Byte},System.UInt32,System.Int32@)">
@@ -92,7 +104,10 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteUInt32(System.Span{System.Byte},System.UInt32,System.Int32,System.Int32@)">
             <summary>
@@ -102,8 +117,11 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32(System.Span{System.Byte},System.Int32,System.Int32@)">
             <summary>
@@ -112,7 +130,10 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32(System.Span{System.Byte},System.Int32,System.Int32,System.Int32@)">
             <summary>
@@ -122,8 +143,11 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32@)">
             <summary>
@@ -132,7 +156,10 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32,System.Int32@)">
             <summary>
@@ -142,8 +169,11 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadUInt32(System.ReadOnlySpan{System.Byte},System.UInt32@,System.Int32@)">
             <summary>
@@ -152,8 +182,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt32"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadInt32(System.ReadOnlySpan{System.Byte},System.Int32@,System.Int32@)">
             <summary>
@@ -162,8 +195,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int32"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadInt32ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@,System.Int32@)">
             <summary>
@@ -172,8 +208,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int32"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.GetRequiredBytesUInt32(System.UInt32)">
             <summary>
@@ -196,7 +235,7 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteUInt32(System.Span{System.Byte},System.UInt32,System.Int32,System.Int32@)">
             <summary>
@@ -206,7 +245,7 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt32(System.Span{System.Byte},System.Int32,System.Int32@)">
@@ -216,7 +255,7 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt32(System.Span{System.Byte},System.Int32,System.Int32,System.Int32@)">
             <summary>
@@ -226,7 +265,7 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32@)">
@@ -236,7 +275,7 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt32ZigZag(System.Span{System.Byte},System.Int32,System.Int32,System.Int32@)">
             <summary>
@@ -246,7 +285,7 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 5</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadUInt32(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -256,7 +295,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.UInt32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt32"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadInt32(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -266,7 +305,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int32"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadInt32ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -276,7 +315,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int32"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int32"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteUInt64(System.Span{System.Byte},System.UInt64,System.Int32@)">
@@ -286,7 +325,10 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteUInt64(System.Span{System.Byte},System.UInt64,System.Int32,System.Int32@)">
             <summary>
@@ -296,8 +338,11 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64(System.Span{System.Byte},System.Int64,System.Int32@)">
             <summary>
@@ -306,7 +351,10 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64(System.Span{System.Byte},System.Int64,System.Int32,System.Int32@)">
             <summary>
@@ -316,8 +364,11 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32@)">
             <summary>
@@ -326,7 +377,10 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryWriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32,System.Int32@)">
             <summary>
@@ -336,8 +390,11 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
             <param name="written">Number of bytes written</param>
-            <returns>True if success or false if not - which means there was not sufficient space in byte array to write <paramref name="value"/></returns>
+            <returns>True if success or false if not - which means there was not sufficient space in <paramref name="destination"/> to write <paramref name="value"/></returns>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
+            <remarks>
+            If method return false, <paramref name="written"/> will be set to zero but whole <paramref name="destination"/> will be polluted
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadUInt64(System.ReadOnlySpan{System.Byte},System.UInt64@,System.Int32@)">
             <summary>
@@ -346,8 +403,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt64"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadInt64(System.ReadOnlySpan{System.Byte},System.Int64@,System.Int32@)">
             <summary>
@@ -356,8 +416,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int64"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadInt64ZigZag(System.ReadOnlySpan{System.Byte},System.Int64@,System.Int32@)">
             <summary>
@@ -366,8 +429,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int64"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.GetRequiredBytesUInt64(System.UInt64)">
             <summary>
@@ -390,7 +456,7 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteUInt64(System.Span{System.Byte},System.UInt64,System.Int32,System.Int32@)">
             <summary>
@@ -400,7 +466,7 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.UInt64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt64(System.Span{System.Byte},System.Int64,System.Int32@)">
@@ -410,7 +476,7 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt64(System.Span{System.Byte},System.Int64,System.Int32,System.Int32@)">
             <summary>
@@ -420,7 +486,7 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32@)">
@@ -430,7 +496,7 @@
             <param name="destination">Byte array to write <paramref name="value"/></param>
             <param name="value">Value to serialize</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.WriteInt64ZigZag(System.Span{System.Byte},System.Int64,System.Int32,System.Int32@)">
             <summary>
@@ -440,7 +506,7 @@
             <param name="value">Value to serialize</param>
             <param name="minBytesToWrite">Minimum number of bytes to write to <paramref name="destination"/>. It has to be less or equal to 10</param>
             <param name="written">Number of bytes written</param>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="destination"/> is too small to hold <paramref name="value"/></exception>
             <exception cref="T:System.ArgumentException"><paramref name="minBytesToWrite"/> is too big</exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadUInt64(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -450,7 +516,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.UInt64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt64"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadInt64(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -460,7 +526,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int64"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadInt64ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -470,7 +536,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int64"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int64"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadUInt16(System.ReadOnlySpan{System.Byte},System.UInt16@,System.Int32@)">
@@ -480,8 +546,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt16"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadInt16(System.ReadOnlySpan{System.Byte},System.Int16@,System.Int32@)">
             <summary>
@@ -490,8 +559,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int16"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.TryReadInt16ZigZag(System.ReadOnlySpan{System.Byte},System.Int16@,System.Int32@)">
             <summary>
@@ -500,8 +572,11 @@
             <param name="source">Byte array from which read <paramref name="value"/></param>
             <param name="value">Read value</param>
             <param name="read">Number of bytes read</param>
-            <returns>True if success or false if not - which means end of array was reached before whole <paramref name="value"/> was read</returns>
+            <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole <paramref name="value"/> was read</returns>
             <exception cref="T:System.OverflowException">Read value is too big or too small for <see cref="T:System.Int16"/></exception>
+            <remarks>
+            If method return false, <paramref name="value"/> and <paramref name="read"/> will be set to zero
+            </remarks>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadUInt16(System.ReadOnlySpan{System.Byte},System.Int32@)">
             <summary>
@@ -510,7 +585,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.UInt16"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.UInt16"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadInt16(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -520,7 +595,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int16"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int16"/></exception>
         </member>
         <member name="M:WojciechMikołajewicz.Base128.ReadInt16ZigZag(System.ReadOnlySpan{System.Byte},System.Int32@)">
@@ -530,7 +605,7 @@
             <param name="source">Byte array from which read value</param>
             <param name="read">Number of bytes read</param>
             <returns>Read value</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="source"/> is too small to contain an <see cref="T:System.Int16"/></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">End of <paramref name="source"/> was reached before whole value was read</exception>
             <exception cref="T:System.OverflowException">Read value is too big for <see cref="T:System.Int16"/></exception>
         </member>
         <member name="T:WojciechMikołajewicz.BinaryReaderBase128">

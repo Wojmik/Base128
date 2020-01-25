@@ -12,7 +12,10 @@ namespace WojciechMikołajewicz
 		/// </summary>
 		/// <param name="source">Byte array</param>
 		/// <param name="read">Number of bytes read</param>
-		/// <returns>True if success or false if not - which means end of array was reached before whole value was skipped</returns>
+		/// <returns>True if success or false if not - which means end of <paramref name="source"/> was reached before whole value was skipped</returns>
+		/// <remarks>
+		/// If method return false, <paramref name="read"/> will be set to zero
+		/// </remarks>
 		public static bool TrySkip(ReadOnlySpan<byte> source, out int read)
 		{
 			byte val;
@@ -26,6 +29,7 @@ namespace WojciechMikołajewicz
 				if(0<=(sbyte)val)
 					return true;
 			}
+			read=0;
 			return false;
 		}
 
