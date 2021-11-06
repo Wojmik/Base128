@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace WojciechMikołajewicz
@@ -343,21 +344,16 @@ namespace WojciechMikołajewicz
 			int required;
 
 			//Base 2 logarithm cannot be used because double can't store ulong with full precision so (int)Math.Log(0xFFFFFFFFFFFFFF, 2) should be 55 and is 56
-			//.Net Core 3.0 Math.ILogB method probably will not work too - for the same reason
 			//(double)0xFFFFFFFFFFFFFF is indistinguishable from (double)0x100000000000000
-#if NETCOREAPP
-			if(System.Runtime.Intrinsics.X86.Lzcnt.X64.IsSupported)
-				required=(63-(int)System.Runtime.Intrinsics.X86.Lzcnt.X64.LeadingZeroCount(value))/7+1;
-			else
-#endif
+#if NETCOREAPP3_0_OR_GREATER
+			required=(63-BitOperations.LeadingZeroCount(value))/7+1;
+#else
+			required = 1;
+			while(0!=(value>>=7))
 			{
-				required = 1;
-				while(0!=(value>>=7))
-				{
-					required++;
-				}
+				required++;
 			}
-
+#endif
 
 			return required;
 		}
@@ -369,7 +365,7 @@ namespace WojciechMikołajewicz
 		/// <returns>Number of bytes required to store <see cref="long"/> <paramref name="value"/></returns>
 		public static int GetRequiredBytesInt64(long value)
 		{
-			//long and ZigZag take exactly the same bits, but ZigZag changes value to ulong and ulong can be calculated using Lzcnt, so do so
+			//long and ZigZag take exactly the same bits, but ZigZag changes value to ulong and ulong can be calculated using LeadingZeroCount, so do so
 			return GetRequiredBytesUInt64((ulong)((value<<1)^(value>>63)));
 		}
 		#endregion

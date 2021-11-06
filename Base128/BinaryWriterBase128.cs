@@ -10,7 +10,7 @@ namespace WojciechMikołajewicz
 	/// </summary>
 	public class BinaryWriterBase128 : BinaryWriter
 	{
-#if NETSTANDARD1_1 || NETSTANDARD2_0
+#if !NETSTANDARD2_1_OR_GREATER && !NETCOREAPP2_1_OR_GREATER
 		/// <summary>
 		/// Internal buffer for serializing
 		/// </summary>
@@ -58,16 +58,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(ulong value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[10];
 #endif
 			int written;
 			
 			Base128.WriteUInt64(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -79,16 +79,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(long value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[10];
 #endif
 			int written;
 
 			Base128.WriteInt64(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -100,16 +100,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128ZigZag(long value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[10];
 #endif
 			int written;
 
 			Base128.WriteInt64ZigZag(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -121,16 +121,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(uint value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[5];
 #endif
 			int written;
 			
 			Base128.WriteUInt32(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -142,16 +142,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(int value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[5];
 #endif
 			int written;
 
 			Base128.WriteInt32(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -163,16 +163,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128ZigZag(int value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[5];
 #endif
 			int written;
 
 			Base128.WriteInt32ZigZag(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -184,16 +184,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(ushort value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[3];
 #endif
 			int written;
 
 			Base128.WriteUInt32(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -205,16 +205,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(short value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[3];
 #endif
 			int written;
 
 			Base128.WriteInt32(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -226,16 +226,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128ZigZag(short value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[3];
 #endif
 			int written;
 
 			Base128.WriteInt32ZigZag(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -247,16 +247,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(byte value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[2];
 #endif
 			int written;
 			
 			Base128.WriteUInt32(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -268,16 +268,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128(sbyte value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[2];
 #endif
 			int written;
 			
 			Base128.WriteInt32(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 
@@ -289,16 +289,16 @@ namespace WojciechMikołajewicz
 		/// <exception cref="ObjectDisposedException">The stream is closed.</exception>
 		public virtual void WriteBase128ZigZag(sbyte value)
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD2_0
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			Span<byte> buf = stackalloc byte[2];
 #endif
 			int written;
 
 			Base128.WriteInt32ZigZag(destination: buf, value: value, written: out written);
-#if NETSTANDARD1_1 || NETSTANDARD2_0
-			this.Write(buf, 0, written);
-#else
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 			this.Write(buf.Slice(0, written));
+#else
+			this.Write(buf, 0, written);
 #endif
 		}
 	}

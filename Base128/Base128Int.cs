@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace WojciechMikołajewicz
@@ -342,11 +343,8 @@ namespace WojciechMikołajewicz
 		{
 			int required;
 
-#if NETCOREAPP
-			if(System.Runtime.Intrinsics.X86.Lzcnt.IsSupported)
-				required=(31-(int)System.Runtime.Intrinsics.X86.Lzcnt.LeadingZeroCount(value))/7+1;
-			else
-				required=(Math.ILogB(value)&int.MaxValue)/7+1;
+#if NETCOREAPP3_0_OR_GREATER
+			required=(31-BitOperations.LeadingZeroCount(value))/7+1;
 #else
 			//Math.Log(0, 2) is -Infinity, cast to int is 0x80000000
 			required=((int)Math.Log(value, 2)&int.MaxValue)/7+1;
