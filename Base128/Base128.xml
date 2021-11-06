@@ -772,6 +772,11 @@
             Writes primitive types in binary to a stream and supports writing strings in a specific encoding.
             </summary>
         </member>
+        <member name="F:WojciechMikołajewicz.BinaryWriterBase128.buf">
+            <summary>
+            Internal buffer for serializing
+            </summary>
+        </member>
         <member name="M:WojciechMikołajewicz.BinaryWriterBase128.#ctor(System.IO.Stream)">
             <summary>
             Initializes a new instance of the System.IO.BinaryWriter class based on the specified stream and using UTF-8 encoding.

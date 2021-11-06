@@ -246,7 +246,7 @@ namespace WojciechMikołajewicz.Base128UnitTest
 			int i;
 
 			sample.CopyTo(expected);
-			expected.Slice(sample.Length).Fill((byte)((uint)(sample[^1]<<25>>6)>>25));
+			expected.Slice(sample.Length).Fill((byte)((uint)(sample[sample.Length-1]<<25>>6)>>25));
 
 			for(i=sample.Length; i<expected.Length; i++)
 			{
