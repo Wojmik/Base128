@@ -1,4 +1,4 @@
-﻿﻿# Base128 variable length integer serializer
+﻿# Base128 variable length integer serializer
 
 This is .Net library for binary serializing and deserializing integer types as variable length integers.
 
