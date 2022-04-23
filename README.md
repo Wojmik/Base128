@@ -177,7 +177,7 @@ After serialization the value looks like:
 
 ![Example signed -283 output](/Documentation/Example%20signed%20-283%20output.png)
 
-As before, less significant byte is serialized first. Seven bits are stored to the output and red bit is set – indicates this is not the last byte. Then next tree significant bits are stored, rest space is filed with last significant bit (as were said before – this is technique to expand type without changing value) and red bit is set to zero – there will be no other bytes.
+As before, less significant byte is serialized first. Seven bits are stored to the output and red bit is set – indicates this is not the last byte. Then next three significant bits are stored, rest space is filed with last significant bit (as were said before – this is technique to expand type without changing value) and red bit is set to zero – there will be no other bytes.
 
 #### long 83 example
 
